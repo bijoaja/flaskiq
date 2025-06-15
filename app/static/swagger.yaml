@@ -1,0 +1,35 @@
+info:
+  title: API Dokumentasi TEMPLATE FLASK
+  description: Dokumentasi API untuk TEMPLATE FLASK
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: Development Server
+
+paths:
+  /:
+    get:
+      summary: Home Endpoint
+      description: Menampilkan pesan selamat datang
+      tags:
+        - Home 
+      responses:
+        200:
+          description: Berhasil mendapatkan pesan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "WELCOME TO API FOR GANESHA AI. VISIT API DOCS: /api/docs"
+
+  # ================= KOMPONEN =================
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
