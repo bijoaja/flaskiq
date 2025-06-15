@@ -1,3 +1,4 @@
+openapi: 3.0.0
 info:
   title: API Dokumentasi TEMPLATE FLASK
   description: Dokumentasi API untuk TEMPLATE FLASK

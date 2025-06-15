@@ -40,7 +40,7 @@ template_flask/
 ```sh
  python -m venv your_name_venv                # Flexibel your_name_venv
  source your_name_venv/bin/activate           # for Linux/Mac
- source your_name_venv/Scripts/activate       # for Windows
+ source your_name_venv/scripts/activate       # for Windows
  pip install -r requirements.txt
 ```
 
