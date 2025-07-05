@@ -25,7 +25,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: "WELCOME TO API FOR GANESHA AI. VISIT API DOCS: /api/docs"
+                    example: "WELCOME TO API FOR TEMPLATE FLASK. VISIT API DOCS: /api/docs"
 
   # ================= KOMPONEN =================
 components:
