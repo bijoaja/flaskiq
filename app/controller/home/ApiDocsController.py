@@ -8,7 +8,7 @@ API_URL = "/static/swagger.yaml"
 swaggerui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL, 
     API_URL,
-    config={"app_name": "GANESHA AI API"}
+    config={"app_name": "TEMPLATE FLASK API"}
 )
 
 class ApiDocsResource(Resource):

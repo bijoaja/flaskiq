@@ -1,4 +1,5 @@
-from .HomeController import HomeResource
+from .ApiHomeController import HomeResource
 from .ApiDocsController import ApiDocsResource
+from .ViewHomeController import ViewDashboard
 
-__all__ = ["HomeResource", "ApiDocsResource"]
+__all__ = ["HomeResource", "ApiDocsResource", "ViewDashboard"]

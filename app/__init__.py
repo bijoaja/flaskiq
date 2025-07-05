@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, send_from_directory, request, send_file, after_this_request
+from flask import Flask, Blueprint, send_from_directory, request, send_file, after_this_request, render_template
 from flask_restful import Resource, Api, reqparse
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -7,7 +7,6 @@ from utils import Profiler, Middleware, Response, TenantRateLimiter
 
 db = SQLAlchemy()
 
-# limiter = Limiter(key_func=Profiler.get_tenant_key, default_limits=["100 per hour"])
 rate_limiter = TenantRateLimiter()
 
 def create_app():
@@ -24,10 +23,11 @@ def create_app():
     rate_limiter.init_app(app)
 
     # Register Routes and other module
-    from app.routes import main_bp
+    from app.routes import api_bp, view_bp
     
 
-    app.register_blueprint(main_bp)
+    app.register_blueprint(api_bp)
+    app.register_blueprint(view_bp)
 
     return app
 
