@@ -1,6 +1,6 @@
 from app import Blueprint, Api
-from app.controller import HomeResource, ApiDocsResource
-from app.controller.ApiDocsController import swaggerui_blueprint
+from app.controller.home import HomeResource, ApiDocsResource
+from app.controller.home.ApiDocsController import swaggerui_blueprint
 
 main_bp = Blueprint("main", __name__, url_prefix="/api")
 api = Api(main_bp)

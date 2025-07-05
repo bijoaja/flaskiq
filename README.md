@@ -2,21 +2,40 @@
 
 ## 📌 **DESCRIBE**
 
-Ganesha AI is a tool to help tenant members in running sports. Ganesha AI can be considered an AI-based Assistant that is able to respond to members appropriately, quickly and usefully. Ganesha AI is built on OpenAI and MediaPipe as a base model.
+Bijoaja is a Flask project template designed to accelerate the development of web applications based on Python Flask efficiently and structurally. This template is suitable as a foundation for various types of applications, ranging from information systems, backend APIs, to analytical dashboards.With a tidy structure and ready-to-use features, developers can immediately focus on business logic without having to think about the repetitive initial setup.
 
-## **Structur Project**
+## **⚙️ Main Feature**
+- 🔁 Modular and Scalable Folder Structure
+- 🔐 Authentication & Authorization (Optional)
+- 🌐 Dynamic Routing and Blueprints
+- 📦 ORM Integration (SQLAlchemy / others)
+- 📊 Support for API & HTML Templates (Jinja2)
+- 🧪 Ready for Testing (Unit Test / Pytest)
+- 🔧 Support for .env, Config Class, and Error Handling
+- 🚀 Ready for Deployment (Gunicorn, Docker, etc.)
+- 🤖 Support for AI Integration (openai, grok, local model, etc)
+
+## **👨‍💻 Support for**
+- Beginner to intermediate Flask developers
+- Students for web-based final projects
+- Researchers or Data Scientists who want to quickly create dashboards or APIs
+
+## **📁 Project Structur**
 ```
 template_flask/
 ├── app/
 │   ├── __init__.py
 │   ├── routes.py
 │   ├── controller/
-│   │   ├── *Controller.py
+│   │   ├── feature/
+│   │   ├   ├──*Controller.py
 │   ├── service/
-│   │   ├── *_service.py
+│   │   ├── feature
+│   │   ├   ├── *_service.py
 │   ├── model/
-│   │   ├── __init__.py
-│   │   ├── models.py
+│   │   ├── feature/
+│   │   ├   ├── __init__.py
+│   │   ├   ├── models.py
 ├── utils/
 │   ├── __init__.py
 │   ├── *.py
@@ -32,8 +51,8 @@ template_flask/
 ### 1️⃣ Clone Repository
 
 ```sh
- git clone https://github.com/bijoaja/template_flask.git
- cd template_flask
+ git clone https://github.com/bijoaja/template_flask.git your_directory
+ cd your_directory
 ```
 
 ### 2️⃣ Create Virtual Environment & Install Dependencies
