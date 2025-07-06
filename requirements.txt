@@ -10,6 +10,6 @@ postgrest==0.19.3
 PyMySQL==1.1.1
 PyJWT==2.10.1
 python-dotenv==1.0.1
-psycopg2==2.9.10
+psycopg2-binary==2.9.10
 pandas==2.2.3
 gunicorn==23.0.0

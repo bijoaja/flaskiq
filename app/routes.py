@@ -1,5 +1,5 @@
 from app import Blueprint, Api
-from app.controller.home import HomeResource, ApiDocsResource, ViewDashboard
+from app.controller.home import HomeResource, ApiDocsResource, ViewHome
 from app.controller.home.ApiDocsController import swaggerui_blueprint
 
 # MAIN ROUTES API
@@ -14,4 +14,4 @@ api_bp.register_blueprint(swaggerui_blueprint, url_prefix="/docs")
 view_bp = Blueprint("view", __name__, url_prefix="/")
 
 # ADD ROUTES VIEW
-view_bp.add_url_rule("/dashboard", view_func=ViewDashboard.dashboard)
+view_bp.add_url_rule("/", view_func=ViewHome.home)

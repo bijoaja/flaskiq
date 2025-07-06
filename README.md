@@ -2,7 +2,7 @@
 
 ## 📌 **DESCRIBE**
 
-Bijoaja is a Flask project template designed to accelerate the development of web applications based on Python Flask efficiently and structurally. This template is suitable as a foundation for various types of applications, ranging from information systems, backend APIs, to analytical dashboards.With a tidy structure and ready-to-use features, developers can immediately focus on business logic without having to think about the repetitive initial setup.
+<b>Bijoaja is a Flask project template designed to accelerate the development of web applications based on Python Flask efficiently and structurally. This template is suitable as a foundation for various types of applications, ranging from information systems, backend APIs, to analytical dashboards.With a tidy structure and ready-to-use features, developers can immediately focus on business logic without having to think about the repetitive initial setup.</b>
 
 ## **⚙️ Main Feature**
 - 🔁 Modular and Scalable Folder Structure
@@ -46,7 +46,7 @@ template_flask/
 └── README.md
 ```
 
-## ⚙️ **Installation**
+## ⚙️ **Installation and Usage**
 ### 1️⃣ Clone Repository
 
 ```sh
@@ -54,7 +54,9 @@ template_flask/
  cd your_directory
 ```
 
-### 2️⃣ Create Virtual Environment & Install Dependencies
+### 2️⃣ Run with Virtual Environment (VENV)
+
+#### <h3> <li> ✅ Create Virtual Environment & Install Dependencies
 ```sh
  python -m venv your_name_venv                # Flexibel your_name_venv
  source your_name_venv/bin/activate           # for Linux/Mac
@@ -62,7 +64,7 @@ template_flask/
  pip install -r requirements.txt
 ```
 
-### 3️⃣ set the .env
+#### <h3> <li> ⚙️ Setup Environment Variables
 
 Change the value in file **.env**:
 
@@ -70,13 +72,31 @@ Change the value in file **.env**:
  mv .env.example .env
 ```
 
-### 4️⃣ Run Applications
+#### <h3> <li> 🚀 Run Applications
 
 ```sh
  flask run
 ```
 
-Application run on localhost `http://127.0.0.1:<your_port>/`
+### 3️⃣ Run with Docker
+
+#### <h3> <li> 🐳 Install Docker Desktop
+<b> Download and install Docker Desktop:
+👉 [**Install Docker**](href:https://docs.docker.com/desktop/)
+
+#### <h3> <li> 🔧 Build and Start Container
+
+```sh
+ docker-compose up --build -d
+```
+
+#### <h3> <li> ♻️ Restart Docker (if have change code)
+
+```sh
+ docker-compose restart template_flask_web
+```
+
+<b> Application run on localhost `http://127.0.0.1:<your_port>/`
 default port: 8080
 
 ## 🛠️ Tech stack
@@ -87,12 +107,13 @@ default port: 8080
 
 ## ⚙️ Requirements System
 - **FLASK 3.1**
-- **PYTHON 11.3**
+- **PYTHON3 12**
 
 ## 📡 Endpoint API (Summary)
 
 | Endpoint        | Method    | Role                       | Description            |
 | --------------- | --------- | -------------------------- | ---------------------  |
+| `/    `         | GET       | ALL                        | Home view              |
 | `/api/`         | GET       | ALL                        | Home API               |
 | `/api/docs`     | GET       | ALL                        | Documentation API      |
 

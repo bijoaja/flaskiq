@@ -1,7 +1,7 @@
 from app import render_template
 
-class ViewDashboard:
-
+class ViewHome:
     @staticmethod
-    def dashboard():
-        return render_template("/home/dashboard.html", name="Template_flask")
+    def home():
+        
+        return render_template("home/index.html", name="Template Flask")
