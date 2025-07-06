@@ -93,7 +93,7 @@ Change the value in file **.env**:
 #### <h3> <li> ♻️ Restart Docker (if have change code)
 
 ```sh
- docker-compose restart template_flask_web
+ docker-compose restart web
 ```
 
 <b> Application run on localhost `http://127.0.0.1:<your_port>/`
