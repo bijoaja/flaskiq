@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM bijoaja/template_flask:latesti
 
 # Buat direktori kerja
 WORKDIR /app
@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . /app
 
 # Install dependensi
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose port Flask
 EXPOSE 8080

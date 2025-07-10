@@ -5,6 +5,7 @@ Flask-RESTful==0.3.10
 Flask-SQLAlchemy==3.1.1
 flask-swagger-ui==4.11.1
 Flask-Limiter==3.12
+Flask-Migrate==4.1.0
 flask_profiler==1.8.1
 postgrest==0.19.3
 PyMySQL==1.1.1

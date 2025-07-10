@@ -7,3 +7,5 @@ dataset
 *.mp3
 test.csv
 *ipynb
+push_docker.sh
+migrations/
