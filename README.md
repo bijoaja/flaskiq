@@ -29,20 +29,32 @@ template_flask/
 │   ├── controller/
 │   │   ├── feature/
 │   │   ├   ├──*Controller.py
-│   ├── service/
-│   │   ├── feature
-│   │   ├   ├── *_service.py
 │   ├── model/
 │   │   ├── __init__.py
 │   │   ├── *model.py
-├── utils/
+│   ├── service/
+│   │   ├── feature
+│   │   ├   ├── *_service.py
+│   ├── static/ ⚙️[TODO]
+│   │   ├── assets
+│   │   ├   ├── CSS/img/js/etc
+│   ├── templates/ ⚙️[TODO]
+│   │   ├   ├── base.html
+│   │   ├   ├── 404.html
+│   │   ├   ├── page/
+│   │   ├── assets
+├── utils/ ⚙️[TODO]
 │   ├── __init__.py
 │   ├── *.py
 ├── config.py
 ├── server.py
 ├── requirements.txt
 ├── .gitignore
+├── .dockerignore
+├── setup.sh ⚙️[TODO]
+├── Makefile ⚙️[TODO]
 ├── .env.example
+├── docker-compose.yml ⚙️[TODO]
 └── README.md
 ```
 
@@ -84,16 +96,28 @@ Change the value in file **.env**:
 <b> Download and install Docker Desktop:
 👉 [**Install Docker**](href:https://docs.docker.com/desktop/)
 
-#### <h3> <li> 🔧 Build and Start Container
-
+#### <h3> <li> 🔧 Setup use docker
+##### <h4> <li> Build Docker
 ```sh
  docker-compose up --build -d
 ```
 
-#### <h3> <li> ♻️ Restart Docker (if have change code)
+##### <h4> <li> Restart Docker (if have change code)
 
 ```sh
  docker-compose restart web
+```
+
+#### <h3> <li> 🔧 Setup use automation
+##### <h4> <li> Makefile
+```sh
+ make setup
+```
+
+##### <h4> <li> bash script
+
+```sh
+ sh setup.sh
 ```
 
 <b> Application run on localhost `http://127.0.0.1:<your_port>/`

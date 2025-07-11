@@ -16,7 +16,7 @@ IMAGE_NAME = bijoaja/template_flask
 VERSION ?= 1.0.0
 MESSAGE ?= "Update $(VERSION)"
 
-.PHONY: build tag push all
+.PHONY: setup build tag push all
 
 # Build image dengan versi
 setup:
