@@ -1,5 +1,6 @@
 services:
   web:
+    build: .
     container_name: template_flask_web
     image: bijoaja/template_flask:latest
     ports:

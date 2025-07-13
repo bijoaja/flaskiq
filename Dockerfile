@@ -1,4 +1,4 @@
-FROM bijoaja/template_flask:latesti
+FROM bijoaja/template_flask:latest
 
 # Buat direktori kerja
 WORKDIR /app
@@ -11,7 +11,3 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose port Flask
 EXPOSE 8080
-
-# Jalankan aplikasi
-CMD ["flask", "run", "--host=0.0.0.0"]
-
