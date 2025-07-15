@@ -1,3 +1,3 @@
-# from .file_name.py import ModelClassName
+from .models import User
 
-# __all__ = ["ModelClassName"]
+__all__ = ["ModelClassName"]
