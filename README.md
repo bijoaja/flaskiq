@@ -1,8 +1,8 @@
-# 📢 **Template Flask - Bijoaja** 💪
+# 📢 **Template Flask - FlaskIQ** 💪
 
 ## 📌 **DESCRIBE**
 
-<b>Bijoaja is a Flask project template designed to accelerate the development of web applications based on Python Flask efficiently and structurally. This template is suitable as a foundation for various types of applications, ranging from information systems, backend APIs, to analytical dashboards.With a tidy structure and ready-to-use features, developers can immediately focus on business logic without having to think about the repetitive initial setup.</b>
+<b>FlaskIQ is a Flask project template designed to accelerate the development of web applications based on Python Flask efficiently and structurally. This template is suitable as a foundation for various types of applications, ranging from information systems, backend APIs, to analytical dashboards.With a tidy structure and ready-to-use features, developers can immediately focus on business logic without having to think about the repetitive initial setup.</b>
 
 ## **⚙️ Main Feature**
 - 🔁 Modular and Scalable Folder Structure
@@ -151,4 +151,4 @@ if you have questions or problems, please contact via email: [**BIJOAJA**](mailt
 
 ---
 
-# 📢 **Template Flask - Bijoaja** 💪
+# 📢 **Template Flask - FlaskIQ** 💪
