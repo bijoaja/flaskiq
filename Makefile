@@ -12,7 +12,7 @@
 # make all VERSION=1.3.5 MESSAGE="Release versi 1.3.5"
 
 # Variabel
-IMAGE_NAME = bijoaja/template_flask
+IMAGE_NAME = bijoaja/flaskiq
 VERSION ?= 1.0.0
 MESSAGE ?= "Update $(VERSION)"
 

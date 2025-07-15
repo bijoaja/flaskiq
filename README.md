@@ -35,10 +35,10 @@ template_flask/
 │   ├── service/
 │   │   ├── feature
 │   │   ├   ├── *_service.py
-│   ├── static/ ⚙️[TODO]
+│   ├── static/
 │   │   ├── assets
 │   │   ├   ├── CSS/img/js/etc
-│   ├── templates/ ⚙️[TODO]
+│   ├── templates/
 │   │   ├   ├── base.html
 │   │   ├   ├── 404.html
 │   │   ├   ├── page/
@@ -51,10 +51,10 @@ template_flask/
 ├── requirements.txt
 ├── .gitignore
 ├── .dockerignore
-├── setup.sh ⚙️[TODO]
-├── Makefile ⚙️[TODO]
+├── setup.sh
+├── Makefile
 ├── .env.example
-├── docker-compose.yml ⚙️[TODO]
+├── docker-compose.yml
 └── README.md
 ```
 

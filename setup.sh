@@ -18,8 +18,8 @@ else
 fi
 
 # 3. Build docker
-echo "🐳 Pull template_flask docker image..."
-docker pull bijoaja/template_flask:latest
+echo "🐳 Pull flaskiq docker image..."
+docker pull bijoaja/flaskiq:latest
 
 # 4. Jalankan docker
 echo "▶️ Menjalankan container..."

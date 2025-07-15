@@ -1,4 +1,4 @@
-FROM bijoaja/template_flask:latest
+FROM bijoaja/flaskiq:latest
 
 # Buat direktori kerja
 WORKDIR /app
