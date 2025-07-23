@@ -18,7 +18,6 @@ services:
   flaskiq_db:
     image: mysql:8.4
     container_name: flaskiq_db
-    restart: always
     environment:
       MYSQL_DATABASE: template_db
       MYSQL_ROOT_PASSWORD: root123

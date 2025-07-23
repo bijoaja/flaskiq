@@ -2328,3 +2328,33 @@ section,
 .starter-section {
   /* Add your styles here */
 }
+
+
+
+/*--------------------------------------------------------------
+# Chatbot Section
+--------------------------------------------------------------*/
+.chatbot-modal {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 320px;
+  max-height: 500px;
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  display: none;
+  flex-direction: column;
+  z-index: 1050;
+}
+
+.chatbot-body {
+  height: 300px;
+  max-height: 300px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+.chatbot-input {
+  padding: 8px;
+}

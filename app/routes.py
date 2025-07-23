@@ -1,5 +1,5 @@
 from app import Blueprint, Api
-from app.controller.home import HomeResource, ApiDocsResource, ViewHome
+from app.controller.home import HomeResource, ApiDocsResource, ViewHome, ChattBot
 from app.controller.home.ApiDocsController import swaggerui_blueprint
 
 # MAIN ROUTES API
@@ -15,3 +15,4 @@ view_bp = Blueprint("view", __name__, url_prefix="/")
 
 # ADD ROUTES VIEW
 view_bp.add_url_rule("/", view_func=ViewHome.home)
+view_bp.add_url_rule("/chatbot", view_func=ChattBot.chatbot, methods=["POST"], endpoint="chatbot")

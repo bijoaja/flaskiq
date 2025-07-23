@@ -20,14 +20,14 @@ MESSAGE ?= "Update $(VERSION)"
 
 # Build image dengan versi
 setup:
-	sh setup.sh
+	bash setup.sh
 
 build:
-	docker build -t $(IMAGE_NAME):$(VERSION) .
+	docker build -t $(IMAGE_NAME):latest .
 
 # Tag image juga sebagai 'latest'
 tag:
-	docker tag $(IMAGE_NAME):$(VERSION) $(IMAGE_NAME):latest
+	docker tag $(IMAGE_NAME):latest $(IMAGE_NAME):$(VERSION)
 
 # Push kedua tag ke Docker Hub
 push:
