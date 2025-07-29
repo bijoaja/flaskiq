@@ -23,7 +23,9 @@ setup:
 	bash setup.sh
 
 build:
-	docker build -t $(IMAGE_NAME):latest .
+	docker-compose up --build -d
+	docker image prune -f
+# 	docker build -t $(IMAGE_NAME):latest .
 
 # Tag image juga sebagai 'latest'
 tag:

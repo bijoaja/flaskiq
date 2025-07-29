@@ -26,7 +26,7 @@ class ChattBot:
         user_message = data.get("message")
         try:
             ollama_response = requests.post(
-                os.getenv("OLLAMA_HOST")+'/api/chat',
+                os.getenv("OLLAMA_HOST"),
                 json={
                     "model": "mistral",
                     "messages": [
@@ -41,19 +41,6 @@ class ChattBot:
                 chunks=ChattBot.generator_with_stream(response=ollama_response),
                 content_type="text/plain"
             )
-            # response_text = ""
-            
-            # for line in ollama_response.iter_lines():
-            #     # print(line)
-            #     if line:
-            #         try:
-            #             result = json.loads(line.decode('utf-8'))
-            #             if result.get('message') and result.get('message').get('content'):
-            #                 response_text += result.get('message').get('content')
-            #         except json.JSONDecodeError:
-            #             continue
-
-            # return jsonify({"response": response_text})
 
         except Exception as e:
             return Response().invalid(is_success=False, values=None, message=f"Terjadi Kesalahan: {str(e)}")

@@ -23,7 +23,7 @@ echo "🐳 Pull image flaskiq..."
 
 # 4. Jalankan semua container
 echo "▶️ Menjalankan semua container..."
-docker-compose up -d
+docker-compose up --build -d
 
 # 5. Cek status container Ollama
 echo "🔍 Mengecek status flaskiq_ai (Ollama)..."
