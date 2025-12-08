@@ -1,3 +1,3 @@
 from .models import User
 
-__all__ = ["ModelClassName"]
+__all__ = ["User"]
