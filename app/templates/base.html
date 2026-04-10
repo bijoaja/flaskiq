@@ -1,198 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>{% block title %}My App{% endblock %}</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}FlaskIQ{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}FlaskIQ — structured Flask project template{% endblock %}">
 
-    <!-- Favicons -->
-    <link rel="icon" href="{{ url_for('static', filename='assets/img/favicon.png') }}">
-    <link rel="apple-touch-icon" href="{{ url_for('static', filename='assets/img/apple-touch-icon.png') }}">
+  <!-- Tailwind CSS via Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
+  <!-- Bootstrap Icons (icons only) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com" rel="preconnect">
-    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
 
-    <!-- Vendor CSS Files -->
-    <link href="{{ url_for('static', filename='assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/vendor/aos/aos.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
-
-    <!-- Main CSS File -->
-    <link href="{{ url_for('static', filename='assets/css/main.css') }}" rel="stylesheet">
-
+  {% block head %}{% endblock %}
 </head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
 
-<body class="index-page">
+  {% include 'partials/navbar.html' %}
 
-    <header id="header" class="header d-flex align-items-center fixed-top">
-        <div
-            class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-
-            <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
-                <!-- Uncomment the line below if you also wish to use an image logo -->
-                <!-- <img src="assets/img/logo.png" alt=""> -->
-                <h1 class="sitename">FLASKIQ TEMPLATES</h1>
-            </a>
-
-            <nav id="navmenu" class="navmenu">
-                <ul>
-                    <li><a href="{{ url_for('view.home') }}" class="active">Home</a></li>
-                    <li><a href="{{ url_for('view.home') }}#about">About</a></li>
-                    <li><a href="{{ url_for('view.home') }}#features">Features</a></li>
-                    <li><a href="{{ url_for('view.home') }}#services">Services</a></li>
-                    <li><a href="{{ url_for('view.home') }}#contact">Contact</a></li>
-                </ul>
-                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-            </nav>
-
-            <a class="btn-getstarted" href="/login">Get Started</a>
-
-        </div>
-    </header>
-
-    <!-- Flash Messages -->
-    <div class="container">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="max-w-7xl mx-auto px-4 mt-4 space-y-2">
         {% for category, message in messages %}
-        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          <div class="px-4 py-3 rounded-lg text-white text-sm font-medium
+            {% if category == 'danger' %}bg-red-500
+            {% elif category == 'success' %}bg-green-500
+            {% elif category == 'warning' %}bg-yellow-500
+            {% else %}bg-blue-500{% endif %}">
             {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
+          </div>
         {% endfor %}
-        {% endif %}
-        {% endwith %}
-    </div>
+      </div>
+    {% endif %}
+  {% endwith %}
 
-    {% block notfound %}{% endblock %}
-
-    <!-- Content Block -->
+  <main class="flex-grow">
     {% block content %}{% endblock %}
+  </main>
 
+  {% include 'partials/footer.html' %}
+  {% include 'partials/chatbot.html' %}
 
-    <footer id="footer" class="footer">
-
-        <div class="container copyright text-center mt-4">
-            <p>© <span>Copyright</span> <strong class="px-1 sitename">BIJOAJA</strong> <span>All Rights Reserved</span>
-            </p>
-        </div>
-
-    </footer>
-
-
-    <!-- Chatbot Button -->
-    <div id="chatbot-button" class="position-fixed bottom-0 end-0 m-4 z-3">
-        <button class="btn btn-primary rounded-circle shadow-lg p-3" onclick="toggleChatbot()">
-            <i class="bi bi-chat-dots fs-4"></i>
-        </button>
-    </div>
-
-    <!-- Chatbot Modal -->
-    <div id="chatbot-modal" class="chatbot-modal shadow-lg">
-        <div class="chatbot-header bg-primary text-white px-3 py-2 d-flex justify-content-between align-items-center">
-            <span>🧠 Tanya FlaskIQ</span>
-            <button class="btn btn-sm btn-light" onclick="toggleChatbot()">×</button>
-        </div>
-        <div id="chatbot-messages" class="chatbot-body px-3 py-2 overflow-auto"></div>
-        <div class="chatbot-input d-flex border-top">
-            <input id="chatbot-input" type="text" class="form-control rounded-0" placeholder="Tanyakan sesuatu..." />
-            <button class="btn btn-primary" onclick="sendChat()">Kirim</button>
-        </div>
-    </div>
-
-    <!-- CHATT BOT -->
-    <script>
-        function toggleChatbot() {
-            const modal = document.getElementById("chatbot-modal");
-            modal.style.display = (modal.style.display === "flex") ? "none" : "flex";
-        }
-
-        function sendChat() {
-            const input = document.getElementById("chatbot-input");
-            const messages = document.getElementById("chatbot-messages");
-            const userText = input.value.trim();
-
-            if (!userText) return;
-
-            messages.innerHTML += `<div class="mb-2"><strong>Anda:</strong> ${userText}</div>`;
-            input.value = "";
-            messages.scrollTop = messages.scrollHeight;
-
-            // Buat elemen div untuk response AI
-            const aiDiv = document.createElement("div");
-            aiDiv.className = "mb-2 text-primary";
-            aiDiv.innerHTML = "<strong>AI:</strong> ";
-            messages.appendChild(aiDiv);
-
-            fetch("/chatbot", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: userText }),
-            })
-                .then(response => {
-                    if (!response.ok) throw new Error("Network error");
-                    const reader = response.body.getReader();
-                    const decoder = new TextDecoder("utf-8");
-
-                    function readChunk() {
-                        reader.read().then(({ done, value }) => {
-                            if (done) {
-                                messages.scrollTop = messages.scrollHeight;
-                                return;
-                            }
-
-                            const chunk = decoder.decode(value, { stream: true });
-                            aiDiv.innerHTML += chunk;
-                            messages.scrollTop = messages.scrollHeight;
-                            readChunk();
-                        });
-                    }
-
-                    readChunk();
-                })
-                .catch(err => {
-                    messages.innerHTML += `<div class="mb-2 text-danger"><strong>Error:</strong> ${err.message}</div>`;
-                });
-        }
-
-    </script>
-
-    <!-- AOS JS -->
-    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>
-
-    {% block scripts %}{% endblock %}
-
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Scroll Top -->
-    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-            class="bi bi-arrow-up-short"></i></a>
-
-    <!-- Vendor JS Files -->
-    <script src="{{ url_for('static', filename='assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/vendor/php-email-form/validate.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/vendor/aos/aos.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
-
-    <!-- Main JS File -->
-    <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+  {% block scripts %}{% endblock %}
 </body>
-
 </html>

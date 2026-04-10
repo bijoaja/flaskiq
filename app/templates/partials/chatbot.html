@@ -1,0 +1,45 @@
+<!-- Floating chatbot button -->
+<div class="fixed bottom-6 right-6 z-50">
+  <button onclick="toggleChatbot()"
+    class="bg-blue-600 text-white rounded-full w-14 h-14 shadow-lg hover:bg-blue-700 transition flex items-center justify-center"
+    aria-label="Open chatbot">
+    <i class="bi bi-chat-dots text-2xl"></i>
+  </button>
+</div>
+
+<!-- Chatbot modal -->
+<div id="chatbot-modal"
+  class="hidden fixed bottom-24 right-6 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl flex-col z-50 border border-gray-200 overflow-hidden">
+
+  <!-- Header -->
+  <div class="bg-blue-600 text-white px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <i class="bi bi-robot text-lg"></i>
+      <span class="font-semibold text-sm">FlaskIQ Assistant</span>
+    </div>
+    <button onclick="toggleChatbot()" class="text-blue-200 hover:text-white transition text-lg leading-none">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <!-- Messages -->
+  <div id="chatbot-messages"
+    class="flex-1 p-3 h-64 overflow-y-auto text-sm space-y-3 bg-gray-50">
+    <div class="text-gray-400 text-xs text-center pt-4">Ask me anything about FlaskIQ</div>
+  </div>
+
+  <!-- Input -->
+  <div class="flex border-t border-gray-200 bg-white">
+    <input
+      id="chatbot-input"
+      type="text"
+      placeholder="Type a message..."
+      class="flex-1 px-3 py-2.5 text-sm outline-none bg-transparent"
+      onkeydown="if(event.key==='Enter') sendChat()"
+    />
+    <button onclick="sendChat()"
+      class="bg-blue-600 text-white px-4 py-2 text-sm hover:bg-blue-700 transition font-medium">
+      Send
+    </button>
+  </div>
+</div>

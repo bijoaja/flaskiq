@@ -1,46 +1,66 @@
-# USAGE
-# Build saja (versi default: 1.0.0)
-# make build
-
-# Build versi tertentu
-# make build VERSION=1.3.5
-
-# Push Github
-# make git MESSAGE="Release versi 1.3.5"
-
-# Build + tag 'latest' + push (otomatis)
-# make all VERSION=1.3.5 MESSAGE="Release versi 1.3.5"
-
-# Variabel
 IMAGE_NAME = bijoaja/flaskiq
-VERSION ?= 1.0.0
-MESSAGE ?= "Update $(VERSION)"
+VERSION    ?= 2.0.0
+MESSAGE    ?= "Release $(VERSION)"
 
-.PHONY: setup build tag push all
+.PHONY: dev prod stop prod-stop logs shell \
+        db-init db-migrate db-upgrade db-setup \
+        build-dev build-prod tag push git all
 
-# Build image dengan versi
-setup:
-	bash setup.sh
+# ── Development ───────────────────────────────────────────────────────────────
+dev:
+	docker compose -f docker-compose.yml up --build -d
+	@echo "Dev server → http://localhost:$${FLASK_RUN_PORT:-8080}"
 
-build:
-	docker-compose up --build -d
-	docker image prune -f
-# 	docker build -t $(IMAGE_NAME):latest .
+stop:
+	docker compose -f docker-compose.yml down
 
-# Tag image juga sebagai 'latest'
+logs:
+	docker compose -f docker-compose.yml logs -f flaskiq_web
+
+shell:
+	docker compose -f docker-compose.yml exec flaskiq_web bash
+
+# ── Production ────────────────────────────────────────────────────────────────
+prod:
+	docker compose -f docker-compose.prod.yml up --build -d
+	@echo "Prod server → http://localhost:$${FLASK_RUN_PORT:-8080}"
+
+prod-stop:
+	docker compose -f docker-compose.prod.yml down
+
+# ── Database ──────────────────────────────────────────────────────────────────
+db-init:
+	docker compose -f docker-compose.yml exec flaskiq_web flask db init
+
+db-migrate:
+	docker compose -f docker-compose.yml exec flaskiq_web flask db migrate -m $(MESSAGE)
+
+db-upgrade:
+	docker compose -f docker-compose.yml exec flaskiq_web flask db upgrade
+
+db-setup: db-init db-migrate db-upgrade
+
+# ── Image management ──────────────────────────────────────────────────────────
+build-dev:
+	docker build -f Docker/Dockerfile.dev -t $(IMAGE_NAME):dev .
+
+build-prod:
+	docker build -f Docker/Dockerfile.prod \
+	  -t $(IMAGE_NAME):$(VERSION) \
+	  -t $(IMAGE_NAME):latest .
+
 tag:
 	docker tag $(IMAGE_NAME):latest $(IMAGE_NAME):$(VERSION)
 
-# Push kedua tag ke Docker Hub
 push:
 	docker push $(IMAGE_NAME):$(VERSION)
 	docker push $(IMAGE_NAME):latest
 
-# Push ke github
+# ── Git ───────────────────────────────────────────────────────────────────────
 git:
 	git add .
-	git commit -m "$(MESSAGE)"
+	git commit -m $(MESSAGE)
 	git push origin main
 
-# Build, tag, dan push sekaligus
-all: build tag push git
+# ── Release (build + push + git) ──────────────────────────────────────────────
+all: build-prod tag push git

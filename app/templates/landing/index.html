@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block title %}FlaskIQ — Structured Flask Template{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section class="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-24">
+  <div class="max-w-5xl mx-auto px-6 text-center">
+    <div class="inline-flex items-center gap-2 bg-blue-500/30 text-blue-100 text-xs font-semibold px-3 py-1 rounded-full mb-6">
+      <i class="bi bi-lightning-charge-fill"></i> v{{ version }}
+    </div>
+    <h1 class="text-5xl font-extrabold tracking-tight mb-4">{{ name }}</h1>
+    <p class="text-blue-100 text-lg max-w-2xl mx-auto mb-10">{{ description }}</p>
+
+    <!-- Feature badges -->
+    <div class="flex flex-wrap justify-center gap-3 mb-10">
+      {% set features = ["JWT Auth", "CMS", "AI Chatbot", "REST API", "Swagger UI", "Tailwind CSS", "Docker"] %}
+      {% for feat in features %}
+        <span class="bg-white/10 text-white text-xs font-medium px-3 py-1 rounded-full border border-white/20">
+          {{ feat }}
+        </span>
+      {% endfor %}
+    </div>
+
+    <!-- CTA buttons -->
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="{{ swagger_url }}"
+         class="bg-white text-blue-700 font-semibold px-6 py-3 rounded-lg hover:bg-blue-50 transition flex items-center gap-2 shadow">
+        <i class="bi bi-file-earmark-code"></i> Swagger UI
+      </a>
+      <a href="{{ cms_url }}"
+         class="bg-blue-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-400 transition flex items-center gap-2 border border-blue-400">
+        <i class="bi bi-layout-text-sidebar"></i> Open CMS
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Architecture overview -->
+<section class="py-16 bg-white">
+  <div class="max-w-5xl mx-auto px-6">
+    <h2 class="text-2xl font-bold text-center text-gray-900 mb-2">Architecture</h2>
+    <p class="text-gray-500 text-center text-sm mb-10">Clean layered architecture — every layer has a single responsibility.</p>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+      {% set layers = [
+        ("bi-sign-turn-right", "Routes", "URL-to-controller mapping"),
+        ("bi-cpu", "Controller", "Request / response only"),
+        ("bi-gear", "Service", "Business logic"),
+        ("bi-database", "Repository", "Data access")
+      ] %}
+      {% for icon, title, desc in layers %}
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-5">
+          <i class="bi {{ icon }} text-blue-500 text-2xl mb-2 block"></i>
+          <h3 class="font-semibold text-gray-900 text-sm">{{ title }}</h3>
+          <p class="text-gray-400 text-xs mt-1">{{ desc }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- API Routes table -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-5xl mx-auto px-6">
+    <h2 class="text-2xl font-bold text-gray-900 mb-2">API Endpoints</h2>
+    <p class="text-gray-500 text-sm mb-8">
+      Full interactive documentation available at
+      <a href="{{ swagger_url }}" class="text-blue-600 hover:underline">{{ swagger_url }}</a>.
+    </p>
+
+    <div class="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+      <table class="min-w-full text-sm bg-white">
+        <thead>
+          <tr class="text-left text-xs font-semibold text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
+            <th class="px-4 py-3 w-20">Method</th>
+            <th class="px-4 py-3">Path</th>
+            <th class="px-4 py-3">Description</th>
+            <th class="px-4 py-3 w-16 text-center">Auth</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          {% for route in api_routes %}
+            <tr class="hover:bg-gray-50 transition">
+              <td class="px-4 py-3">
+                {% set method_colors = {
+                  "GET":    "bg-green-100 text-green-700",
+                  "POST":   "bg-blue-100 text-blue-700",
+                  "PUT":    "bg-yellow-100 text-yellow-700",
+                  "DELETE": "bg-red-100 text-red-700"
+                } %}
+                <span class="text-xs font-bold px-2 py-0.5 rounded {{ method_colors.get(route.method, 'bg-gray-100 text-gray-700') }}">
+                  {{ route.method }}
+                </span>
+              </td>
+              <td class="px-4 py-3 font-mono text-gray-700 text-xs">{{ route.path }}</td>
+              <td class="px-4 py-3 text-gray-600">{{ route.description }}</td>
+              <td class="px-4 py-3 text-center">
+                {% if route.auth %}
+                  <i class="bi bi-lock-fill text-yellow-500" title="Requires JWT"></i>
+                {% else %}
+                  <i class="bi bi-unlock text-gray-300"></i>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Quick start -->
+<section class="py-16 bg-white">
+  <div class="max-w-5xl mx-auto px-6 text-center">
+    <h2 class="text-2xl font-bold text-gray-900 mb-8">Quick Start</h2>
+    <div class="grid sm:grid-cols-3 gap-6 text-left">
+      {% set steps = [
+        ("1", "bi-terminal", "Start Dev Server", "make dev"),
+        ("2", "bi-database", "Run Migrations", "make db-setup"),
+        ("3", "bi-file-earmark-code", "Explore API", "open /api/v1/docs")
+      ] %}
+      {% for num, icon, title, cmd in steps %}
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-6">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center">{{ num }}</span>
+            <i class="bi {{ icon }} text-blue-500 text-lg"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 text-sm mb-1">{{ title }}</h3>
+          <code class="text-xs bg-gray-900 text-green-400 px-3 py-1.5 rounded block mt-2">{{ cmd }}</code>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

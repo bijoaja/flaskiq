@@ -1,0 +1,46 @@
+<nav class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+
+      <!-- Logo -->
+      <a href="{{ url_for('home') }}" class="flex items-center gap-2">
+        <i class="bi bi-lightning-charge-fill text-blue-600 text-xl"></i>
+        <span class="font-bold text-gray-900 text-lg tracking-tight">FlaskIQ</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
+        <a href="{{ url_for('home') }}" class="hover:text-blue-600 transition">Home</a>
+        <a href="{{ url_for('cms.cms_index') }}" class="hover:text-blue-600 transition">CMS</a>
+        <a href="/api/v1/docs" class="hover:text-blue-600 transition flex items-center gap-1">
+          <i class="bi bi-file-earmark-code"></i> API Docs
+        </a>
+        <a href="{{ url_for('login') }}" class="hover:text-blue-600 transition">Login</a>
+        <a href="{{ url_for('register') }}"
+           class="bg-blue-600 text-white px-4 py-1.5 rounded-full hover:bg-blue-700 transition text-sm">
+          Register
+        </a>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button id="nav-toggle" class="md:hidden text-gray-600 hover:text-blue-600">
+        <i class="bi bi-list text-2xl"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 px-4 pb-4 space-y-2">
+    <a href="{{ url_for('home') }}" class="block py-2 text-sm text-gray-700 hover:text-blue-600">Home</a>
+    <a href="{{ url_for('cms.cms_index') }}" class="block py-2 text-sm text-gray-700 hover:text-blue-600">CMS</a>
+    <a href="/api/v1/docs" class="block py-2 text-sm text-gray-700 hover:text-blue-600">API Docs</a>
+    <a href="{{ url_for('login') }}" class="block py-2 text-sm text-gray-700 hover:text-blue-600">Login</a>
+    <a href="{{ url_for('register') }}" class="block py-2 text-sm text-blue-600 font-medium">Register</a>
+  </div>
+</nav>
+
+<script>
+  document.getElementById('nav-toggle').addEventListener('click', function () {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+</script>

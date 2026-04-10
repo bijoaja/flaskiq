@@ -1,36 +1,248 @@
 openapi: 3.0.0
 info:
-  title: API Dokumentasi TEMPLATE FLASK
-  description: Dokumentasi API untuk TEMPLATE FLASK
-  version: 1.0.0
+  title: FlaskIQ API
+  description: REST API for the FlaskIQ structured Flask template.
+  version: 2.0.0
 
 servers:
   - url: http://localhost:8080
-    description: Development Server
+    description: Development server
+
+security: []
 
 paths:
-  /:
+
+  /api/v1/:
     get:
-      summary: Home Endpoint
-      description: Menampilkan pesan selamat datang
-      tags:
-        - Home 
+      summary: Welcome message
+      tags: [General]
       responses:
-        200:
-          description: Berhasil mendapatkan pesan
+        "200":
+          description: API is reachable
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "WELCOME TO API FOR TEMPLATE FLASK. VISIT API DOCS: /api/docs"
+                $ref: "#/components/schemas/GenericResponse"
 
-  # ================= KOMPONEN =================
+  /api/v1/auth/register:
+    post:
+      summary: Register a new user
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, email, password]
+              properties:
+                username:
+                  type: string
+                  example: johndoe
+                email:
+                  type: string
+                  format: email
+                  example: john@example.com
+                password:
+                  type: string
+                  format: password
+                  example: secret123
+      responses:
+        "201":
+          description: User registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericResponse"
+        "409":
+          description: Email or username already taken
+
+  /api/v1/auth/login:
+    post:
+      summary: Authenticate and receive a JWT token
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: john@example.com
+                password:
+                  type: string
+                  format: password
+                  example: secret123
+      responses:
+        "200":
+          description: Login successful — token returned
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/GenericResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          token:
+                            type: string
+        "401":
+          description: Invalid credentials
+
+  /api/v1/chatbot:
+    post:
+      summary: Streaming AI chatbot
+      tags: [Chatbot]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [message]
+              properties:
+                message:
+                  type: string
+                  example: What is FlaskIQ?
+      responses:
+        "200":
+          description: Streaming plain-text response
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /api/v1/cms:
+    get:
+      summary: List all CMS pages
+      tags: [CMS]
+      responses:
+        "200":
+          description: Pages list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericResponse"
+    post:
+      summary: Create a new CMS page
+      tags: [CMS]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PageInput"
+      responses:
+        "201":
+          description: Page created
+        "401":
+          description: Unauthorized
+
+  /api/v1/cms/{page_id}:
+    get:
+      summary: Get a CMS page by ID
+      tags: [CMS]
+      parameters:
+        - name: page_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Page found
+        "404":
+          description: Page not found
+    put:
+      summary: Update a CMS page
+      tags: [CMS]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: page_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PageInput"
+      responses:
+        "200":
+          description: Page updated
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+    delete:
+      summary: Delete a CMS page
+      tags: [CMS]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: page_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Page deleted
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+
+  /api/v1/docs/info:
+    get:
+      summary: API documentation metadata
+      tags: [General]
+      responses:
+        "200":
+          description: Docs URL info
+
 components:
   securitySchemes:
     BearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+
+  schemas:
+    GenericResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          nullable: true
+        message:
+          type: string
+
+    PageInput:
+      type: object
+      required: [title, slug]
+      properties:
+        title:
+          type: string
+          example: Hello World
+        slug:
+          type: string
+          example: hello-world
+        content:
+          type: string
+          example: "<p>Page content here</p>"
+        is_published:
+          type: boolean
+          example: true

@@ -9,44 +9,35 @@ class Middleware:
         pass
 
     @staticmethod
-    def decode_auth_token(auth_token):
-        """Memvalidasi token JWT."""
+    def decode_auth_token(auth_token: str) -> dict:
+        """Decode and validate a JWT token. Raises ValueError on failure."""
         try:
-            payload = jwt.decode(
-                auth_token, str(os.getenv("JWT_KEY")), algorithms=["HS256"]
-            )
-            return payload
+            return jwt.decode(auth_token, str(os.getenv("JWT_KEY")), algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
-            return "Token expired."
+            raise ValueError("Token has expired")
         except jwt.InvalidTokenError as e:
-            return f"Invalid token. {str(e)}"
-        except Exception as e:
-            return f"Token decoding error: {str(e)}"
+            raise ValueError(f"Invalid token: {e}")
 
     @staticmethod
     def token_required(f):
         @wraps(f)
         def decorated(*args, **kwargs):
-            token = request.headers.get("Authorization")
-
-            if not token:
-                return Response().invalid(is_success=False, values=None, message="Token is missing! Please login.", code=401)
-
+            auth_header = request.headers.get("Authorization", "")
+            if not auth_header or not auth_header.startswith("Bearer "):
+                return Response().invalid(
+                    is_success=False, values=None,
+                    message="Authorization header missing or malformed. Use 'Bearer <token>'.",
+                    code=401,
+                )
             try:
-                # print(token)
-                token = token.split(" ")[1]
-                decode = Middleware.decode_auth_token(token)
-                current_user = decode["user"]
-
-                if not current_user:
-                    return Response().invalid(is_success=False, values=None, message="User not found.", code=401)
-
-            except Exception as e:
-                return Response().invalid(is_success=False, values=None, message=f"Invalid token! {str(e)}", code=401)
-
-            return f(
-                *args, current_user=current_user, **kwargs
-            )  # Kirim current_user ke endpoint
+                token = auth_header.split(" ", 1)[1]
+                payload = Middleware.decode_auth_token(token)
+                current_user = payload["user"]
+            except (ValueError, KeyError) as e:
+                return Response().invalid(
+                    is_success=False, values=None, message=str(e), code=401
+                )
+            return f(*args, current_user=current_user, **kwargs)
 
         return decorated
 
