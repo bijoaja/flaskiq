@@ -25,6 +25,9 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+# AI Agents
+agents/
+
 # PyInstaller
 *.manifest
 *.spec

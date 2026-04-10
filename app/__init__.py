@@ -35,8 +35,8 @@ def create_app(config_name='default'):
         return render_template("404.html"), 404
 
     # Register Blueprints
-    from app.routes import api_bp, view_bp
-    app.register_blueprint(api_bp)
+    from app.routes import api_v1_bp, view_bp
+    app.register_blueprint(api_v1_bp)
     app.register_blueprint(view_bp)
 
     return app

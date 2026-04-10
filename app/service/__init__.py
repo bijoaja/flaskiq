@@ -10,10 +10,10 @@ def _load_module(filename):
     return mod
 
 
-_home    = _load_module("home.controller.py")
-_chatbot = _load_module("chatbot.controller.py")
+_home = _load_module("home.service.py")
+_cms  = _load_module("cms.service.py")
 
-HomeView    = _home.HomeView
-ChatbotView = _chatbot.ChatbotView
+HomeService = _home.HomeService
+CmsService  = _cms.CmsService
 
-__all__ = ["HomeView", "ChatbotView"]
+__all__ = ["HomeService", "CmsService"]
