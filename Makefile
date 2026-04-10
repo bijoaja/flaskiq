@@ -42,7 +42,8 @@ db-setup: db-init db-migrate db-upgrade
 
 # ── Image management ──────────────────────────────────────────────────────────
 build-dev:
-	docker build -f Docker/Dockerfile.dev -t $(IMAGE_NAME):dev .
+	docker build -f Docker/Dockerfile.dev \
+	  -t $(IMAGE_NAME):dev .
 
 build-prod:
 	docker build -f Docker/Dockerfile.prod \
@@ -53,8 +54,11 @@ tag:
 	docker tag $(IMAGE_NAME):latest $(IMAGE_NAME):$(VERSION)
 
 push:
-	docker push $(IMAGE_NAME):$(VERSION)
 	docker push $(IMAGE_NAME):latest
+	docker push $(IMAGE_NAME):$(VERSION)
+
+push-dev:
+	docker push $(IMAGE_NAME):dev
 
 # ── Git ───────────────────────────────────────────────────────────────────────
 git:

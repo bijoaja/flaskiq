@@ -5,6 +5,7 @@ services:
       context: .
       dockerfile: Docker/Dockerfile.dev
     container_name: flaskiq_web
+    image: bijoaja/flaskiq:dev
     ports:
       - "${FLASK_RUN_PORT:-8080}:8080"
     volumes:

@@ -1,136 +1,92 @@
+"""
+TenantRateLimiter — per-user rate limiting.
+
+Authenticated requests are keyed by user ID from the JWT token.
+Anonymous requests fall back to the client IP address.
+
+App-wide default (100 req/min):
+    rate_limiter = TenantRateLimiter()
+    rate_limiter.init_app(app)
+
+Per-route override:
+    @rate_limiter.limit("10 per minute")
+    def sensitive_endpoint():
+        ...
+
+Exempt a route entirely:
+    @rate_limiter.exempt
+    def health_check():
+        ...
+"""
+
 import logging
-import json
-import os
-from datetime import datetime
 from flask_limiter import Limiter as FlaskLimiter
+from flask_limiter.util import get_remote_address
 from flask import request
-from utils.profiler import Profiler
+
+logger = logging.getLogger("flaskiq.limiter")
+
+
+def _get_rate_limit_key() -> str:
+    """Key function for Flask-Limiter.
+
+    Authenticated → "user:<user_id>"   (same limit pool per user, any IP)
+    Anonymous     → "ip:<remote_addr>" (limit pool per IP)
+
+    Decodes JWT inline to avoid circular imports with the rest of utils.
+    """
+    auth_header = request.headers.get("Authorization", "")
+    if auth_header.startswith("Bearer "):
+        try:
+            import jwt
+            import os
+            token = auth_header.split(" ", 1)[1]
+            payload = jwt.decode(
+                token, os.getenv("JWT_KEY", ""), algorithms=["HS256"]
+            )
+            user_id = payload.get("user", {}).get("id")
+            if user_id:
+                key = f"user:{user_id}"
+                logger.debug("Rate limit key: %s", key)
+                return key
+        except Exception:
+            pass
+
+    key = f"ip:{get_remote_address()}"
+    logger.debug("Rate limit key: %s", key)
+    return key
 
 
 class TenantRateLimiter:
-    class SafeFormatter(logging.Formatter):
-        def format(self, record):
-            record.tenant = getattr(record, "tenant", "-")
-            record.user_id = getattr(record, "user_id", "-")
-            record.endpoint = getattr(record, "endpoint", "-")
-            record.method = getattr(record, "method", "-")
-            record.status = getattr(record, "status", "-")
-            return super().format(record)
 
-    def __init__(
-        self, key_func=Profiler.get_tenant_key, default_limits=["100 per minutes"]
-    ):
-        self.key_func = key_func
-        self.default_limits = default_limits
-        self.limiter = FlaskLimiter(
-            key_func=self.key_func, default_limits=self.default_limits
-        )
-        self.json_log_path = "logs/rate_limit.json"
-        self._ensure_log_directory()
-        self.logger = self._setup_logging()
-
-    def init_app(self, app):
-        self.limiter.init_app(app)
-        self._register_signals()
-        self._register_after_request(app)
-
-    def limit(self, *args, **kwargs):
-        return self.limiter.limit(*args, **kwargs)
-
-    def _setup_logging(self):
-        logger = logging.getLogger("limiter")
-        logger.setLevel(logging.INFO)
-
-        formatter = self.SafeFormatter(
-            "[%(asctime)s] INFO in limiter: [RateLimiter] tenant=%(tenant)s | user_id=%(user_id)s | %(method)s %(endpoint)s | Status: %(status)s"
+    def __init__(self, default_limits: list | None = None):
+        self._default_limits = default_limits or ["100 per minute"]
+        self._limiter = FlaskLimiter(
+            key_func=_get_rate_limit_key,
+            default_limits=self._default_limits,
         )
 
-        # Console log handler
-        stream_handler = logging.StreamHandler()
-        stream_handler.setFormatter(formatter)
-        logger.addHandler(stream_handler)
+    def init_app(self, app) -> None:
+        self._limiter.init_app(app)
 
-        logger.propagate = False
-        return logger
+    def limit(self, limit_value: str, **kwargs):
+        """Apply a custom rate limit to a specific route.
 
-    def _log_rate_limit(self, tenant, user_id, endpoint, method, status):
-        # Logging to terminal and file
-        self.logger.info(
-            "Rate limit log",
-            extra={
-                "tenant": tenant or "-",
-                "user_id": user_id or "-",
-                "endpoint": endpoint or "-",
-                "method": method or "-",
-                "status": status or "-",
-            },
-        )
+        Example::
 
-        # Logging to JSON
-        self._log_to_json(tenant, user_id, method, endpoint, status)
-        
-    def _ensure_log_directory(self):
-        """Ensure the logs directory exists"""
-        log_dir = os.path.dirname(self.json_log_path)
-        if not os.path.exists(log_dir):
-            print(log_dir)
-            os.makedirs(log_dir)
+            @rate_limiter.limit("5 per minute")
+            def login():
+                ...
+        """
+        return self._limiter.limit(limit_value, **kwargs)
 
-    def _log_to_json(self, tenant, user_id, method, endpoint, status):
-        timestamp = datetime.utcnow().isoformat()
-        log_entry = {
-            "timestamp": timestamp,
-            "method": method,
-            "endpoint": endpoint,
-            "status": status,
-        }
+    def exempt(self, func):
+        """Exempt a route from all rate limiting.
 
-        # Load existing log
-        data = {}
-        if os.path.exists(self.json_log_path):
-            with open(self.json_log_path, "r") as f:
-                try:
-                    data = json.load(f)
-                except json.JSONDecodeError:
-                    data = {}
+        Example::
 
-        # Update log
-        tenant=f"tenant_id_{tenant}"
-        user_id=f"user_id_{user_id}"
-        if tenant not in data:
-            data[tenant] = {}
-
-        if str(user_id) not in data[tenant]:
-            data[tenant][str(user_id)] = []
-
-        data[tenant][str(user_id)].append(log_entry)
-
-        # Save log
-        with open(self.json_log_path, "w") as f:
-            json.dump(data, f, indent=2)
-
-    def _register_after_request(self, app):
-        @app.after_request
-        def log_successful_request(response):
-            if response.status_code != 429:
-                tenant = self.key_func().get("tenant_id")
-                user_id = self.key_func().get("user_id")
-                self._log_rate_limit(
-                    tenant, user_id, request.endpoint, request.method, "ALLOWED"
-                )
-            return response
-
-    def _register_signals(self):
-        try:
-            from flask_limiter.signals import request_limit_exceeded
-
-            @request_limit_exceeded.connect_via(self.limiter)
-            def log_limit_exceeded(sender, request, **extra):
-                tenant = self.key_func()
-                user_id = getattr(request, "user_id", "-")
-                self._log_rate_limit(
-                    tenant, user_id, request.endpoint, request.method, "LIMIT EXCEEDED"
-                )
-
-        except ImportError:
-            pass  # Versi Flask-Limiter tidak mendukung signals
+            @rate_limiter.exempt
+            def health():
+                return "ok"
+        """
+        return self._limiter.exempt(func)
