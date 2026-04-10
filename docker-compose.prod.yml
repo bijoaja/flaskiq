@@ -18,30 +18,31 @@ services:
         condition: service_healthy
     restart: unless-stopped
     networks:
-      - app-network
+      - flaskiq-network
 
   flaskiq_db:
-    image: mysql:8.4
+    image: postgres:17.6
     container_name: flaskiq_db
     environment:
-      MYSQL_DATABASE: flaskiq_db
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root123}
+      POSTGRES_DB: flaskiq_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_PASSWORD:-root123}"]
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "flaskiq_db"]
       interval: 10s
       timeout: 5s
       retries: 5
     restart: unless-stopped
     networks:
-      - app-network
+      - flaskiq-network
 
 volumes:
-  mysql_data: {}
+  postgres_data: {}
 
 networks:
-  app-network:
+  flaskiq-network:
     driver: bridge

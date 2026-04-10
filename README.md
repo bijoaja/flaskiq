@@ -26,7 +26,7 @@ The template comes equipped with essential features such as JWT authentication, 
 | Layer          | Technology                                          |
 |----------------|-----------------------------------------------------|
 | Framework      | Flask 3.1, Flask-RESTful                            |
-| Database       | SQLAlchemy + Flask-Migrate (SQLite dev / MySQL prod)|
+| Database       | SQLAlchemy + Flask-Migrate (SQLite dev / MySQL / Postgres prod)|
 | Auth           | PyJWT, Flask-WTF (CSRF)                             |
 | Rate limiting  | Flask-Limiter (tenant-aware)                        |
 | AI / LLM       | Ollama (local) or OpenAI via LangChain              |
@@ -99,7 +99,7 @@ flaskiq/
 ├── requirements.txt
 ├── Makefile
 ├── docker-compose.yml               # Dev (bind-mount + Ollama)
-├── docker-compose.prod.yml          # Prod (no bind-mount, MySQL)
+├── docker-compose.prod.yml          # Prod (no bind-mount, MySQL/Postgres)
 └── .env.example
 ```
 
@@ -191,7 +191,7 @@ FLASK_APP=server.py
 FLASK_ENV=development
 FLASK_RUN_PORT=8080
 
-# Database (SQLite default, MySQL for prod)
+# Database (SQLite default, MySQL, PostgreSQL for prod)
 DATABASE_URL=sqlite:///flaskiq.db
 
 # Security

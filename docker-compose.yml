@@ -17,47 +17,48 @@ services:
       - FLASK_ENV=development
     depends_on:
       - flaskiq_db
-      - flaskiq_ai
+      #- flaskiq_ai
     networks:
-      - app-network
+      - flaskiq-network
 
   flaskiq_db:
-    image: mysql:8.4
+    image: postgres:17.6
     container_name: flaskiq_db
     environment:
-      MYSQL_DATABASE: flaskiq_db
-      MYSQL_ROOT_PASSWORD: root123
+      POSTGRES_DB: flaskiq_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123"]
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "flaskiq_db"]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - app-network
+      - flaskiq-network
 
-  flaskiq_ai:
-    image: ollama/ollama:latest
-    container_name: flaskiq_ai
-    ports:
-      - "11434:11434"
-    volumes:
-      - ollama_models:/root/.ollama
-    tty: true
-    stdin_open: true
-    networks:
-      - app-network
-    entrypoint: ["/bin/bash", "-c"]
-    command: >
-      "ollama serve & sleep 5 && ollama pull mistral && wait"
+  # flaskiq_ai:
+  #   image: ollama/ollama:latest
+  #   container_name: flaskiq_ai
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ollama_models:/root/.ollama
+  #   tty: true
+  #   stdin_open: true
+  #   networks:
+  #     - flaskiq-network
+  #   entrypoint: ["/bin/bash", "-c"]
+  #   command: >
+  #     "ollama serve & sleep 5 && ollama pull mistral && wait"
 
 volumes:
-  mysql_data: {}
-  ollama_models: {}
+  postgres_data: {}
+  # ollama_models: {}
 
 networks:
-  app-network:
+  flaskiq-network:
     driver: bridge

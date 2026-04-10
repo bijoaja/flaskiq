@@ -1,11 +1,24 @@
 <footer class="bg-white border-t border-gray-200 mt-12">
   <div class="max-w-7xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
-    <p>© 2024 <span class="font-semibold text-gray-700">FlaskIQ</span> — All rights reserved.</p>
+    
+    <!-- Left: Copyright -->
+    <p>© 2026 <span class="font-semibold text-gray-700">FlaskIQ</span> — All rights reserved.</p>
+    
+    <!-- Middle: Credit -->
+     <p> Designed and developed by
+       <a href="https://instagram.com/projekinduluaja" target="_blank" 
+          class="hover:text-blue-600 transition text-center">
+         @projekinduluaja
+       </a>
+     </p>
+    
+    <!-- Right: Navbar -->
     <div class="flex items-center gap-4">
       <a href="/api/v1/docs" class="hover:text-blue-600 transition flex items-center gap-1">
         <i class="bi bi-file-earmark-code"></i> API Docs
       </a>
       <a href="{{ url_for('cms.cms_index') }}" class="hover:text-blue-600 transition">CMS</a>
     </div>
+
   </div>
 </footer>

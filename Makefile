@@ -8,7 +8,7 @@ MESSAGE    ?= "Release $(VERSION)"
 
 # ── Development ───────────────────────────────────────────────────────────────
 dev:
-	docker compose -f docker-compose.yml up --build -d
+	docker compose -f docker-compose.yml up -d
 	@echo "Dev server → http://localhost:$${FLASK_RUN_PORT:-8080}"
 
 stop:
@@ -33,7 +33,7 @@ db-init:
 	docker compose -f docker-compose.yml exec flaskiq_web flask db init
 
 db-migrate:
-	docker compose -f docker-compose.yml exec flaskiq_web flask db migrate -m $(MESSAGE)
+	docker compose -f docker-compose.yml exec flaskiq_web flask db migrate -m "$(MESSAGE)"
 
 db-upgrade:
 	docker compose -f docker-compose.yml exec flaskiq_web flask db upgrade
@@ -63,7 +63,7 @@ push-dev:
 # ── Git ───────────────────────────────────────────────────────────────────────
 git:
 	git add .
-	git commit -m $(MESSAGE)
+	git commit -m "$(MESSAGE)"
 	git push origin main
 
 # ── Release (build + push + git) ──────────────────────────────────────────────
