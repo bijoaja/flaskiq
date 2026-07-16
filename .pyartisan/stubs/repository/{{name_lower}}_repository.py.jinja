@@ -1,0 +1,26 @@
+from app.model.{{name_lower}} import {{name_title}}
+
+
+class {{name_title}}Repository:
+
+    @staticmethod
+    def get_all():
+        # TODO: add query filters as needed
+        return {{name_title}}.query.all()
+
+    @staticmethod
+    def get_by_id(id):
+        return {{name_title}}.query.get(id)
+
+    @staticmethod
+    def save(instance):
+        from app import db
+        db.session.add(instance)
+        db.session.commit()
+        return instance
+
+    @staticmethod
+    def delete(instance):
+        from app import db
+        db.session.delete(instance)
+        db.session.commit()

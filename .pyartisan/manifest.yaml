@@ -1,0 +1,38 @@
+id: flaskiq
+framework: flask
+version: 1.0
+
+paths:
+  controller: app/controller
+  service: app/service
+  repository: app/repository
+  model: app/model
+
+generators:
+  controller:
+    stub: stubs/controller
+    path: controller
+    registration:
+      type: import_list
+      target: "{path}/view/{name_lower}/__init__.py"
+  service:
+    stub: stubs/service
+    path: service
+    registration:
+      type: import_list
+      target: "{path}/__init__.py"
+  repository:
+    stub: stubs/repository
+    path: repository
+    registration:
+      type: import_list
+      target: "{path}/__init__.py"
+  model:
+    stub: stubs/model
+    path: model
+    registration:
+      type: import_list
+      target: "{path}/__init__.py"
+
+scripts:
+  serve: "python3 server.py"
