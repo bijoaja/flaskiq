@@ -1,5 +1,5 @@
 from flask import render_template, abort
-from app.service.cms_service import CmsService
+from app.service.view.cms_service import CmsService
 
 
 class CmsView:

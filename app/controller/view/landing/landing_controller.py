@@ -1,5 +1,5 @@
 from flask import render_template
-from app.service.landing_service import LandingService
+from app.service.view.landing_service import LandingService
 
 
 class LandingView:

@@ -1,0 +1,12 @@
+from flask import Blueprint
+from app.controller.view.{{name_lower}} import {{name_title}}Controller
+
+{{name_lower}}_bp = Blueprint("{{name_lower}}", __name__)
+
+{{name_lower}}_bp.add_url_rule("/{{name_lower}}",                view_func={{name_title}}Controller.index,   methods=["GET"])
+{{name_lower}}_bp.add_url_rule("/{{name_lower}}/create",         view_func={{name_title}}Controller.create,  methods=["GET"])
+{{name_lower}}_bp.add_url_rule("/{{name_lower}}",                view_func={{name_title}}Controller.store,   methods=["POST"])
+{{name_lower}}_bp.add_url_rule("/{{name_lower}}/<int:id>",       view_func={{name_title}}Controller.show,    methods=["GET"])
+{{name_lower}}_bp.add_url_rule("/{{name_lower}}/<int:id>/edit",  view_func={{name_title}}Controller.edit,    methods=["GET"])
+{{name_lower}}_bp.add_url_rule("/{{name_lower}}/<int:id>",       view_func={{name_title}}Controller.update,  methods=["PUT"])
+{{name_lower}}_bp.add_url_rule("/{{name_lower}}/<int:id>",       view_func={{name_title}}Controller.destroy, methods=["DELETE"])

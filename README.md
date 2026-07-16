@@ -43,19 +43,24 @@ flaskiq/
 ├── app/
 │   ├── __init__.py                  # App factory (CSRF, security headers, blueprints)
 │   ├── routes/                      # URL-to-controller mapping (blueprints)
-│   │   ├── landing.py
-│   │   ├── auth.py
-│   │   ├── cms.py
-│   │   └── api/v1/__init__.py
-│   ├── controller/                  # Request parsing + response only
-│   │   ├── landing/
-│   │   ├── auth/
-│   │   ├── cms/
-│   │   └── api/v1/                  # auth, chatbot, cms, docs
-│   ├── service/                     # Business logic
-│   │   ├── auth_service.py
-│   │   ├── cms_service.py
-│   │   ├── landing_service.py
+│   │   ├── view/                    # View blueprints (Jinja HTML templates)
+│   │   │   ├── landing.py
+│   │   │   ├── auth.py
+│   │   │   └── cms.py
+│   │   ├── api/v1/                  # API routes (Flask-RESTful resources)
+│   │   │   └── __init__.py
+│   │   └── __init__.py
+│   ├── controller/                  # Request parsing + response formatting
+│   │   ├── view/                    # View controllers
+│   │   │   ├── landing/
+│   │   │   ├── auth/
+│   │   │   └── cms/
+│   │   └── api/v1/                  # API controllers (auth, chatbot, cms, docs)
+│   ├── service/                     # Business logic layer
+│   │   ├── view/                    # View services
+│   │   │   ├── auth_service.py
+│   │   │   ├── cms_service.py
+│   │   │   └── landing_service.py
 │   │   └── agent/                   # Multi-provider chatbot
 │   │       ├── chatbot_service.py   # Provider dispatch (AI_PROVIDER env var)
 │   │       ├── ollama/              # Local Ollama agent

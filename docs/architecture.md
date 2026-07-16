@@ -34,11 +34,15 @@ HTTP Request
 ## Layer Rules
 
 ### Routes (`app/routes/`)
+- View blueprints are located under `app/routes/view/` (e.g. `auth.py`, `cms.py`)
+- API endpoints are structured under `app/routes/api/v{version}/` (e.g. `api/v1/__init__.py`)
 - Map URL patterns to controller methods using Flask `Blueprint`
 - Never import services or models directly
 - No conditional logic
 
 ### Controllers (`app/controller/`)
+- View controllers are located under `app/controller/view/` (e.g. `auth/auth_controller.py`)
+- API controllers are located under `app/controller/api/v{version}/` (e.g. `api/v1/auth_controller.py`)
 - Parse `request.get_json()` / `request.args`
 - Validate that required fields are present (structural validation only)
 - Call exactly one service method
@@ -46,6 +50,8 @@ HTTP Request
 - Never call `db.session` or model queries
 
 ### Services (`app/service/`)
+- View services are located under `app/service/view/` (e.g. `auth_service.py`)
+- API services (if versioned) are located under `app/service/api/v{version}/`
 - Contain all business logic
 - Call repository methods for data access
 - Raise `ValueError` for domain errors (not HTTP errors)

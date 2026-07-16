@@ -1,5 +1,5 @@
 from flask import Blueprint
-from app.controller.cms.cms_controller import CmsView
+from app.controller.view.cms.cms_controller import CmsView
 
 cms_bp = Blueprint("cms", __name__, url_prefix="/cms")
 

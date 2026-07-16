@@ -1,0 +1,38 @@
+from flask import render_template, redirect, url_for, request
+
+
+class {{name_title}}Controller:
+
+    @staticmethod
+    def index():
+        # TODO: call {{name_title}}Service.get_all()
+        return render_template("{{name_lower}}/index.html")
+
+    @staticmethod
+    def show(id):
+        # TODO: call {{name_title}}Service.get_by_id(id)
+        return render_template("{{name_lower}}/show.html")
+
+    @staticmethod
+    def create():
+        return render_template("{{name_lower}}/create.html")
+
+    @staticmethod
+    def store():
+        # TODO: call {{name_title}}Service.create(request.form.to_dict())
+        return redirect(url_for("{{name_lower}}.index"))
+
+    @staticmethod
+    def edit(id):
+        # TODO: call {{name_title}}Service.get_by_id(id)
+        return render_template("{{name_lower}}/edit.html")
+
+    @staticmethod
+    def update(id):
+        # TODO: call {{name_title}}Service.update(id, request.form.to_dict())
+        return redirect(url_for("{{name_lower}}.index"))
+
+    @staticmethod
+    def destroy(id):
+        # TODO: call {{name_title}}Service.delete(id)
+        return redirect(url_for("{{name_lower}}.index"))

@@ -2,7 +2,7 @@ from flask import request
 from flask_restful import Resource
 
 from utils import Response
-from app.service.auth_service import AuthService
+from app.service.view.auth_service import AuthService
 
 
 class AuthRegisterResource(Resource):

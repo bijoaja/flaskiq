@@ -3,7 +3,7 @@ from flask_restful import Resource
 
 from utils import Response
 from utils.middleware import Middleware
-from app.service.cms_service import CmsService
+from app.service.view.cms_service import CmsService
 
 
 class CmsListResource(Resource):

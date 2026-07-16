@@ -7,20 +7,25 @@ paths:
   service: app/service
   repository: app/repository
   model: app/model
+  routes: app/routes
 
 generators:
   controller:
     stub: stubs/controller
+    stub_subpath: "{{type}}"
     path: controller
+    dest: "{% if type == 'api' %}api/v{{version}}/{{name_lower}}{% else %}view/{{name_lower}}{% endif %}"
     registration:
       type: import_list
-      target: "{{path}}/view/{{name_lower}}/__init__.py"
+      target: "{{path}}/{% if type == 'api' %}api/v{{version}}/{{name_lower}}{% else %}view/{{name_lower}}{% endif %}/__init__.py"
   service:
     stub: stubs/service
+    stub_subpath: "{{type}}"
     path: service
+    dest: "{% if type == 'api' %}api/v{{version}}{% else %}view{% endif %}"
     registration:
       type: import_list
-      target: "{{path}}/__init__.py"
+      target: "{{path}}/{% if type == 'api' %}api/v{{version}}{% else %}view{% endif %}/__init__.py"
   repository:
     stub: stubs/repository
     path: repository
@@ -30,6 +35,13 @@ generators:
   model:
     stub: stubs/model
     path: model
+    registration:
+      type: import_list
+      target: "{{path}}/__init__.py"
+  routes:
+    stub: stubs/routes/view
+    path: routes
+    dest: view
     registration:
       type: import_list
       target: "{{path}}/__init__.py"
