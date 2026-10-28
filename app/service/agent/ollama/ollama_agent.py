@@ -1,7 +1,8 @@
-import os
 import json
+import os
+from collections.abc import Generator
+
 import requests
-from typing import Generator
 
 from app.service.agent.base_agent import BaseAgent
 
@@ -11,15 +12,15 @@ class OllamaAgent(BaseAgent):
 
     def __init__(self, model: str | None = None, host: str | None = None):
         self.model = model or os.getenv("OLLAMA_MODEL", "mistral")
-        self.host  = host  or os.getenv("OLLAMA_HOST", "http://localhost:11434")
+        self.host = host or os.getenv("OLLAMA_HOST", "http://localhost:11434")
 
     def get_generator(self, user_message: str, system_prompt: dict) -> Generator:
         response = requests.post(
             f"{self.host}/api/chat",
             json={
-                "model":    self.model,
+                "model": self.model,
                 "messages": [system_prompt, {"role": "user", "content": user_message}],
-                "stream":   True,
+                "stream": True,
             },
             stream=True,
             timeout=60,

@@ -1,6 +1,8 @@
 import os
+
 import jwt
 import pytest
+
 from app.service.view.auth_service import AuthService
 
 

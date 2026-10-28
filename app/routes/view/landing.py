@@ -1,4 +1,5 @@
 from flask import Blueprint
+
 from app.controller.view.landing.landing_controller import LandingView
 
 landing_bp = Blueprint("landing", __name__)

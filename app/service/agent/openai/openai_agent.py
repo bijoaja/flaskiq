@@ -1,5 +1,5 @@
 import os
-from typing import Generator
+from collections.abc import Generator
 
 from app.service.agent.base_agent import BaseAgent
 
@@ -11,8 +11,8 @@ class OpenAIAgent(BaseAgent):
         self.model = model or os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
     def get_generator(self, user_message: str, system_prompt: dict) -> Generator:
+        from langchain_core.messages import HumanMessage, SystemMessage
         from langchain_openai import ChatOpenAI
-        from langchain_core.messages import SystemMessage, HumanMessage
 
         llm = ChatOpenAI(
             model=self.model,

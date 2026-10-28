@@ -1,8 +1,11 @@
-import jwt
-from flask import g, request
-from functools import wraps
-from utils import Response
 import os
+from functools import wraps
+
+import jwt
+from flask import request
+
+from .response import Response
+
 
 class Middleware:
     def __init__(self):
@@ -25,7 +28,8 @@ class Middleware:
             auth_header = request.headers.get("Authorization", "")
             if not auth_header or not auth_header.startswith("Bearer "):
                 return Response().invalid(
-                    is_success=False, values=None,
+                    is_success=False,
+                    values=None,
                     message="Authorization header missing or malformed. Use 'Bearer <token>'.",
                     code=401,
                 )
@@ -34,9 +38,7 @@ class Middleware:
                 payload = Middleware.decode_auth_token(token)
                 current_user = payload["user"]
             except (ValueError, KeyError) as e:
-                return Response().invalid(
-                    is_success=False, values=None, message=str(e), code=401
-                )
+                return Response().invalid(is_success=False, values=None, message=str(e), code=401)
             return f(*args, current_user=current_user, **kwargs)
 
         return decorated

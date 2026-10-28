@@ -4,7 +4,7 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from utils import Response
 
 SWAGGER_URL = "/api/v1/docs"
-API_URL     = "/static/swagger.yaml"
+API_URL = "/static/swagger.yaml"
 
 swaggerui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL,
@@ -14,7 +14,6 @@ swaggerui_blueprint = get_swaggerui_blueprint(
 
 
 class ApiDocsResource(Resource):
-
     def get(self):
         return Response().success(
             is_success=True,

@@ -1,5 +1,5 @@
 import os
-from typing import Generator
+from collections.abc import Generator
 
 from app.service.agent.tools.rag_tool import RAGTool
 
@@ -19,9 +19,11 @@ class ChatbotService:
 
         if provider == "openai":
             from app.service.agent.openai.openai_agent import OpenAIAgent
+
             agent = OpenAIAgent()
         else:
             from app.service.agent.ollama.ollama_agent import OllamaAgent
+
             agent = OllamaAgent()
 
         return agent.get_generator(user_message, system_prompt)

@@ -1,6 +1,8 @@
-from app import app
 import os
+
 from dotenv import load_dotenv
+
+from app import app
 
 load_dotenv()
 if __name__ == "__main__":

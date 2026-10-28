@@ -20,9 +20,10 @@ Exempt a route entirely:
 """
 
 import logging
+
+from flask import request
 from flask_limiter import Limiter as FlaskLimiter
 from flask_limiter.util import get_remote_address
-from flask import request
 
 logger = logging.getLogger("flaskiq.limiter")
 
@@ -38,12 +39,12 @@ def _get_rate_limit_key() -> str:
     auth_header = request.headers.get("Authorization", "")
     if auth_header.startswith("Bearer "):
         try:
-            import jwt
             import os
+
+            import jwt
+
             token = auth_header.split(" ", 1)[1]
-            payload = jwt.decode(
-                token, os.getenv("JWT_KEY", ""), algorithms=["HS256"]
-            )
+            payload = jwt.decode(token, os.getenv("JWT_KEY", ""), algorithms=["HS256"])
             user_id = payload.get("user", {}).get("id")
             if user_id:
                 key = f"user:{user_id}"
@@ -58,7 +59,6 @@ def _get_rate_limit_key() -> str:
 
 
 class TenantRateLimiter:
-
     def __init__(self, default_limits: list | None = None):
         self._default_limits = default_limits or ["100 per minute"]
         self._limiter = FlaskLimiter(

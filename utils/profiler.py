@@ -13,9 +13,10 @@ Read identity in a request context:
     identity = Profiler.get_identity()   # "user:42" or "ip:127.0.0.1"
 """
 
-import time
 import logging
+import time
 from functools import wraps
+
 from flask import g, request
 
 logger = logging.getLogger("flaskiq.profiler")
@@ -32,12 +33,12 @@ def _resolve_identity() -> str:
     auth_header = request.headers.get("Authorization", "")
     if auth_header.startswith("Bearer "):
         try:
-            import jwt
             import os
+
+            import jwt
+
             token = auth_header.split(" ", 1)[1]
-            payload = jwt.decode(
-                token, os.getenv("JWT_KEY", ""), algorithms=["HS256"]
-            )
+            payload = jwt.decode(token, os.getenv("JWT_KEY", ""), algorithms=["HS256"])
             user_id = payload.get("user", {}).get("id")
             if user_id:
                 return f"user:{user_id}"
@@ -47,7 +48,6 @@ def _resolve_identity() -> str:
 
 
 class Profiler:
-
     @staticmethod
     def register_profiler(app) -> None:
         """Register before/after hooks to log every request duration."""
@@ -83,6 +83,7 @@ class Profiler:
             def send_email(to):
                 ...
         """
+
         @wraps(func)
         def wrapper(*args, **kwargs):
             start = time.perf_counter()
@@ -90,6 +91,7 @@ class Profiler:
             duration = time.perf_counter() - start
             logger.info("[track] %s  %.4fs", func.__qualname__, duration)
             return result
+
         return wrapper
 
     @staticmethod

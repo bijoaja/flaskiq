@@ -23,12 +23,14 @@ def test_page_repository_create_and_get(app, db):
 
 
 def test_page_repository_get_by_slug_published_filter(app, db):
-    PageRepository.create({
-        "title": "Draft",
-        "slug": "draft-page",
-        "content": "Draft content",
-        "is_published": False,
-    })
+    PageRepository.create(
+        {
+            "title": "Draft",
+            "slug": "draft-page",
+            "content": "Draft content",
+            "is_published": False,
+        }
+    )
 
     # Default is published_only=True
     assert PageRepository.get_by_slug("draft-page") is None
@@ -37,17 +39,22 @@ def test_page_repository_get_by_slug_published_filter(app, db):
 
 
 def test_page_repository_update_and_delete(app, db):
-    page = PageRepository.create({
-        "title": "Initial",
-        "slug": "initial",
-        "content": "Initial content",
-        "is_published": False,
-    })
+    page = PageRepository.create(
+        {
+            "title": "Initial",
+            "slug": "initial",
+            "content": "Initial content",
+            "is_published": False,
+        }
+    )
 
-    updated = PageRepository.update(page.id, {
-        "title": "Updated Title",
-        "is_published": True,
-    })
+    updated = PageRepository.update(
+        page.id,
+        {
+            "title": "Updated Title",
+            "is_published": True,
+        },
+    )
     assert updated is not None
     assert updated.title == "Updated Title"
     assert updated.is_published is True

@@ -1,6 +1,6 @@
-from .response import Response
+from .limiter import TenantRateLimiter
 from .middleware import Middleware
 from .profiler import Profiler
-from .limiter import TenantRateLimiter
+from .response import Response
 
 __all__ = ["Response", "Middleware", "Profiler", "TenantRateLimiter"]

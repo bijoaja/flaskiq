@@ -1,7 +1,7 @@
 from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from flask_cors import CORS
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 
 from config import config
@@ -29,9 +29,9 @@ def create_app(config_name: str = "default") -> Flask:
     @app.after_request
     def add_security_headers(response):
         response.headers["X-Content-Type-Options"] = "nosniff"
-        response.headers["X-Frame-Options"]        = "DENY"
-        response.headers["X-XSS-Protection"]       = "1; mode=block"
-        response.headers["Referrer-Policy"]         = "strict-origin-when-cross-origin"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
         return response
 
     # ── Database initialisation ───────────────────────────────────────────────
@@ -46,14 +46,16 @@ def create_app(config_name: str = "default") -> Flask:
     @app.errorhandler(429)
     def rate_limit_exceeded(e):
         from utils import Response
+
         return Response().invalid(
-            is_success=False, values=None,
+            is_success=False,
+            values=None,
             message="Rate limit exceeded. Please slow down.",
             code=429,
         )
 
     # ── Blueprints ────────────────────────────────────────────────────────────
-    from app.routes import landing_bp, auth_view_bp, cms_bp, api_v1_bp
+    from app.routes import api_v1_bp, auth_view_bp, cms_bp, landing_bp
 
     app.register_blueprint(landing_bp)
     app.register_blueprint(auth_view_bp)
