@@ -1,4 +1,4 @@
-from app.routes import landing_bp, auth_view_bp, cms_bp, api_v1_bp
+from app.routes import api_v1_bp, auth_view_bp, cms_bp, landing_bp
 
 
 def test_blueprints_registered(app):

@@ -1,6 +1,6 @@
 from app import db
-from app.repository.base_repository import BaseRepository
 from app.model.page import Page
+from app.repository.base_repository import BaseRepository
 
 
 class PageRepository(BaseRepository):

@@ -1,9 +1,9 @@
-from flask import render_template, abort
+from flask import abort, render_template
+
 from app.service.view.cms_service import CmsService
 
 
 class CmsView:
-
     @staticmethod
     def index():
         pages = CmsService.get_published_pages()

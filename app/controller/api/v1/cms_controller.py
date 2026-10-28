@@ -1,13 +1,12 @@
 from flask import request
 from flask_restful import Resource
 
+from app.service.view.cms_service import CmsService
 from utils import Response
 from utils.middleware import Middleware
-from app.service.view.cms_service import CmsService
 
 
 class CmsListResource(Resource):
-
     def get(self):
         pages = CmsService.list_pages()
         return Response().success(is_success=True, values=pages, message="Pages retrieved.")
@@ -17,7 +16,8 @@ class CmsListResource(Resource):
         data = request.get_json() or {}
         if not data.get("title") or not data.get("slug"):
             return Response().invalid(
-                is_success=False, values=None,
+                is_success=False,
+                values=None,
                 message="Fields 'title' and 'slug' are required.",
                 code=400,
             )
@@ -26,11 +26,12 @@ class CmsListResource(Resource):
 
 
 class CmsDetailResource(Resource):
-
     def get(self, page_id: int):
         page = CmsService.get_page(page_id)
         if not page:
-            return Response().invalid(is_success=False, values=None, message="Page not found.", code=404)
+            return Response().invalid(
+                is_success=False, values=None, message="Page not found.", code=404
+            )
         return Response().success(is_success=True, values=page, message="Page retrieved.")
 
     @Middleware.token_required
@@ -38,12 +39,16 @@ class CmsDetailResource(Resource):
         data = request.get_json() or {}
         page = CmsService.update_page(page_id, data)
         if not page:
-            return Response().invalid(is_success=False, values=None, message="Page not found.", code=404)
+            return Response().invalid(
+                is_success=False, values=None, message="Page not found.", code=404
+            )
         return Response().success(is_success=True, values=page, message="Page updated.")
 
     @Middleware.token_required
     def delete(self, current_user, page_id: int):
         deleted = CmsService.delete_page(page_id)
         if not deleted:
-            return Response().invalid(is_success=False, values=None, message="Page not found.", code=404)
+            return Response().invalid(
+                is_success=False, values=None, message="Page not found.", code=404
+            )
         return Response().success(is_success=True, values=None, message="Page deleted.")

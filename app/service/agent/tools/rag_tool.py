@@ -1,4 +1,5 @@
 import os
+
 from app.service.agent.tools.base_tool import BaseTool
 
 
@@ -17,7 +18,7 @@ class RAGTool(BaseTool):
     def _load(self, path: str) -> str:
         abs_path = os.path.join(os.path.dirname(__file__), "../../../../..", path)
         try:
-            with open(abs_path, "r", encoding="utf-8") as f:
+            with open(abs_path, encoding="utf-8") as f:
                 return f.read()
         except FileNotFoundError:
             return "Knowledge base not available."

@@ -263,6 +263,28 @@ Adding a new provider: implement `BaseAgent` in `app/service/agent/<name>/`, add
 
 ---
 
+## Testing & Code Quality
+
+Install development dependencies:
+```bash
+pip install -r requirements-dev.txt
+```
+
+Run test suite:
+```bash
+pytest -v
+```
+
+Lint and format code:
+```bash
+ruff check .          # check lint
+ruff check --fix .    # autofix lint issues
+ruff format --check . # check formatting
+ruff format .         # format code
+```
+
+---
+
 ## Requirements
 
 - Python 3.12+

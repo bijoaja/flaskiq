@@ -1,12 +1,12 @@
 import os
+from datetime import UTC, datetime, timedelta
+
 import jwt
-from datetime import datetime, timedelta, timezone
 
 from app.repository.user_repository import UserRepository
 
 
 class AuthService:
-
     @staticmethod
     def register(username: str, email: str, password: str) -> dict:
         if UserRepository.get_by_email(email):
@@ -25,14 +25,12 @@ class AuthService:
 
     @staticmethod
     def _generate_token(user) -> str:
-        expiry = datetime.now(timezone.utc) + timedelta(
-            minutes=int(os.getenv("JWT_EXPIRY_MINUTES", "60"))
-        )
+        expiry = datetime.now(UTC) + timedelta(minutes=int(os.getenv("JWT_EXPIRY_MINUTES", "60")))
         payload = {
             "user": {
-                "id":       user.id,
+                "id": user.id,
                 "username": user.username,
-                "email":    user.email,
+                "email": user.email,
             },
             "exp": expiry,
         }
