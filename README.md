@@ -148,6 +148,17 @@ flask db upgrade
 python server.py
 ```
 
+### Running Tests
+
+Install development dependencies and run tests:
+
+```bash
+pip install -r requirements-dev.txt
+pytest -v
+```
+
+Continuous integration runs automatically on every pull request and push to `main` across Python 3.12 and 3.14.
+
 ---
 
 ## Make Targets
