@@ -6,11 +6,11 @@ class UserRepository(BaseRepository):
     model = User
 
     @classmethod
-    def get_by_email(cls, email: str):
+    def get_by_email(cls, email: str) -> User | None:
         return User.query.filter_by(email=email).first()
 
     @classmethod
-    def get_by_username(cls, username: str):
+    def get_by_username(cls, username: str) -> User | None:
         return User.query.filter_by(username=username).first()
 
     @classmethod

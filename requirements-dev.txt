@@ -1,3 +1,11 @@
 -r requirements.txt
 pytest>=8.2.0
 ruff>=0.4.0
+mypy>=1.10.0
+types-Flask
+types-requests
+types-PyYAML
+types-Werkzeug
+bandit[toml]>=1.7
+pip-audit
+

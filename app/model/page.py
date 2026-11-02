@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Any
 
 from app import db
 
@@ -6,15 +7,15 @@ from app import db
 class Page(db.Model):
     __tablename__ = "pages"
 
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200), nullable=False)
-    slug = db.Column(db.String(200), unique=True, nullable=False, index=True)
-    content = db.Column(db.Text, nullable=False, default="")
-    is_published = db.Column(db.Boolean, default=False, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    id: Any = db.Column(db.Integer, primary_key=True)
+    title: Any = db.Column(db.String(200), nullable=False)
+    slug: Any = db.Column(db.String(200), unique=True, nullable=False, index=True)
+    content: Any = db.Column(db.Text, nullable=False, default="")
+    is_published: Any = db.Column(db.Boolean, default=False, nullable=False)
+    created_at: Any = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at: Any = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "id": self.id,
             "title": self.title,

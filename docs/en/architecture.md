@@ -1,13 +1,13 @@
 # Architecture
 
-FlaskIQ uses a strict four-layer architecture. Each layer has a single responsibility and may only call the layer directly below it.
+FlaskIQ follows a strict four-layer architecture. Each layer has a single responsibility and only interacts with the layer directly beneath it.
 
 ```
 HTTP Request
      │
      ▼
 ┌─────────────┐
-│   Routes    │  URL mapping — no logic, just wires URL to controller
+│   Routes    │  URL mapping — no logic, wires URL to controller
 └──────┬──────┘
        │
        ▼
@@ -70,20 +70,4 @@ HTTP Request
 
 ## File Naming
 
-All files use **snake_case** (e.g., `cms_controller.py`, `user_repository.py`).  
-No dot-notation filenames — standard Python imports work everywhere.
-
-## Agent System (`app/service/agent/`)
-
-```
-ChatbotService           ← entry point (reads AI_PROVIDER env var)
-├── OllamaAgent          ← requests to local Ollama server
-├── OpenAIAgent          ← LangChain + openai SDK streaming
-└── tools/
-    └── RAGTool          ← loads README.md as system prompt (extensible)
-```
-
-Adding a new LLM provider requires only:
-1. Create `app/service/agent/<provider>/<provider>_agent.py` implementing `BaseAgent`
-2. Add an `elif provider == "<provider>"` branch in `ChatbotService.get_generator()`
-3. Set `AI_PROVIDER=<provider>` in `.env`
+All files use **snake_case** (e.g., `cms_controller.py`, `user_repository.py`). Standard Python imports work everywhere.

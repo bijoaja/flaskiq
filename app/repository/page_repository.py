@@ -1,3 +1,5 @@
+from typing import Any
+
 from app import db
 from app.model.page import Page
 from app.repository.base_repository import BaseRepository
@@ -7,18 +9,18 @@ class PageRepository(BaseRepository):
     model = Page
 
     @classmethod
-    def get_published(cls) -> list:
+    def get_published(cls) -> list[Page]:
         return Page.query.filter_by(is_published=True).order_by(Page.created_at.desc()).all()
 
     @classmethod
-    def get_by_slug(cls, slug: str, published_only: bool = True):
+    def get_by_slug(cls, slug: str, published_only: bool = True) -> Page | None:
         query = Page.query.filter_by(slug=slug)
         if published_only:
             query = query.filter_by(is_published=True)
         return query.first()
 
     @classmethod
-    def create(cls, data: dict) -> Page:
+    def create(cls, data: dict[str, Any]) -> Page:
         page = Page(
             title=data["title"],
             slug=data["slug"],
@@ -29,8 +31,8 @@ class PageRepository(BaseRepository):
         return page
 
     @classmethod
-    def update(cls, page_id: int, data: dict):
-        page = cls.get_by_id(page_id)
+    def update(cls, page_id: int, data: dict[str, Any]) -> Page | None:
+        page: Page | None = cls.get_by_id(page_id)
         if not page:
             return None
         for field in ("title", "slug", "content", "is_published"):
@@ -41,7 +43,7 @@ class PageRepository(BaseRepository):
 
     @classmethod
     def delete_by_id(cls, page_id: int) -> bool:
-        page = cls.get_by_id(page_id)
+        page: Page | None = cls.get_by_id(page_id)
         if not page:
             return False
         cls.delete(page)
