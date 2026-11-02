@@ -20,6 +20,7 @@ Exempt a route entirely:
 """
 
 import logging
+from typing import Any
 
 from flask import request
 from flask_limiter import Limiter as FlaskLimiter
@@ -43,15 +44,17 @@ def _get_rate_limit_key() -> str:
 
             import jwt
 
-            token = auth_header.split(" ", 1)[1]
-            payload = jwt.decode(token, os.getenv("JWT_KEY", ""), algorithms=["HS256"])
-            user_id = payload.get("user", {}).get("id")
-            if user_id:
-                key = f"user:{user_id}"
-                logger.debug("Rate limit key: %s", key)
-                return key
-        except Exception:
-            pass
+            token = auth_header.split(" ", 1)[1].strip()
+            jwt_key = os.getenv("JWT_KEY", "")
+            if token and jwt_key:
+                payload = jwt.decode(token, jwt_key, algorithms=["HS256"])
+                user_id = payload.get("user", {}).get("id")
+                if user_id:
+                    key = f"user:{user_id}"
+                    logger.debug("Rate limit key: %s", key)
+                    return key
+        except (jwt.PyJWTError, KeyError, ValueError, AttributeError) as exc:
+            logger.debug("Failed to extract rate limit key from token: %s", exc)
 
     key = f"ip:{get_remote_address()}"
     logger.debug("Rate limit key: %s", key)
@@ -59,17 +62,19 @@ def _get_rate_limit_key() -> str:
 
 
 class TenantRateLimiter:
-    def __init__(self, default_limits: list | None = None):
-        self._default_limits = default_limits or ["100 per minute"]
+    def __init__(self, default_limits: list[str] | None = None) -> None:
+        self._default_limits: list[Any] = (
+            list(default_limits) if default_limits else ["100 per minute"]
+        )
         self._limiter = FlaskLimiter(
             key_func=_get_rate_limit_key,
             default_limits=self._default_limits,
         )
 
-    def init_app(self, app) -> None:
+    def init_app(self, app: Any) -> None:
         self._limiter.init_app(app)
 
-    def limit(self, limit_value: str, **kwargs):
+    def limit(self, limit_value: str, **kwargs: Any) -> Any:
         """Apply a custom rate limit to a specific route.
 
         Example::
@@ -80,7 +85,7 @@ class TenantRateLimiter:
         """
         return self._limiter.limit(limit_value, **kwargs)
 
-    def exempt(self, func):
+    def exempt(self, func: Any) -> Any:
         """Exempt a route from all rate limiting.
 
         Example::

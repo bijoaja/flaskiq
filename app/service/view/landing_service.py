@@ -1,5 +1,8 @@
+from typing import Any
+
+
 class LandingService:
-    API_ROUTES = [
+    API_ROUTES: list[dict[str, Any]] = [
         {"method": "GET", "path": "/api/v1/", "description": "Welcome message", "auth": False},
         {
             "method": "POST",
@@ -38,7 +41,7 @@ class LandingService:
     ]
 
     @staticmethod
-    def get_context() -> dict:
+    def get_context() -> dict[str, Any]:
         return {
             "name": "FlaskIQ",
             "version": "2.0.0",

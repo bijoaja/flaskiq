@@ -15,7 +15,9 @@ Read identity in a request context:
 
 import logging
 import time
+from collections.abc import Callable
 from functools import wraps
+from typing import Any
 
 from flask import g, request
 
@@ -37,27 +39,29 @@ def _resolve_identity() -> str:
 
             import jwt
 
-            token = auth_header.split(" ", 1)[1]
-            payload = jwt.decode(token, os.getenv("JWT_KEY", ""), algorithms=["HS256"])
-            user_id = payload.get("user", {}).get("id")
-            if user_id:
-                return f"user:{user_id}"
-        except Exception:
-            pass
+            token = auth_header.split(" ", 1)[1].strip()
+            jwt_key = os.getenv("JWT_KEY", "")
+            if token and jwt_key:
+                payload = jwt.decode(token, jwt_key, algorithms=["HS256"])
+                user_id = payload.get("user", {}).get("id")
+                if user_id:
+                    return f"user:{user_id}"
+        except (jwt.PyJWTError, KeyError, ValueError, AttributeError) as exc:
+            logger.debug("Failed to resolve identity from token: %s", exc)
     return f"ip:{request.remote_addr}"
 
 
 class Profiler:
     @staticmethod
-    def register_profiler(app) -> None:
+    def register_profiler(app: Any) -> None:
         """Register before/after hooks to log every request duration."""
 
         @app.before_request
-        def _start_timer():
+        def _start_timer() -> None:
             g.start_time = time.perf_counter()
 
         @app.after_request
-        def _log_request(response):
+        def _log_request(response: Any) -> Any:
             if hasattr(g, "start_time"):
                 duration = time.perf_counter() - g.start_time
                 identity = _resolve_identity()
@@ -72,7 +76,7 @@ class Profiler:
             return response
 
     @staticmethod
-    def track(func):
+    def track(func: Callable[..., Any]) -> Callable[..., Any]:
         """Decorator — logs execution time of any function.
 
         Works inside and outside a request context.
@@ -85,7 +89,7 @@ class Profiler:
         """
 
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             start = time.perf_counter()
             result = func(*args, **kwargs)
             duration = time.perf_counter() - start

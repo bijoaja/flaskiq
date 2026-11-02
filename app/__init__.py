@@ -1,3 +1,5 @@
+from typing import Any
+
 from flask import Flask, render_template
 from flask_cors import CORS
 from flask_migrate import Migrate
@@ -7,15 +9,18 @@ from flask_wtf.csrf import CSRFProtect
 from config import config
 from utils import Profiler, TenantRateLimiter
 
-db = SQLAlchemy()
-migrate = Migrate()
+db: Any = SQLAlchemy()
+migrate: Any = Migrate()
 rate_limiter = TenantRateLimiter()
-csrf = CSRFProtect()
+csrf: Any = CSRFProtect()
 
 
 def create_app(config_name: str = "default") -> Flask:
     app = Flask(__name__)
-    app.config.from_object(config[config_name])
+    cfg = config[config_name]
+    if hasattr(cfg, "validate") and callable(cfg.validate):
+        cfg.validate()
+    app.config.from_object(cfg)
 
     # ── Extensions ────────────────────────────────────────────────────────────
     Profiler.register_profiler(app)

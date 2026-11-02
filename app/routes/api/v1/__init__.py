@@ -28,4 +28,4 @@ api.add_resource(CmsListResource, "/cms")
 api.add_resource(CmsDetailResource, "/cms/<int:page_id>")
 api.add_resource(ApiDocsResource, "/docs/info")
 
-api_v1_bp.register_blueprint(swaggerui_blueprint, url_prefix="/docs")
+api_v1_bp.register_blueprint(swaggerui_blueprint, url_prefix="/docs")  # type: ignore[attr-defined]
