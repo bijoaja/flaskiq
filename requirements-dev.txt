@@ -1,7 +1,7 @@
 -r requirements.txt
 pytest>=9.2.0
 ruff>=0.4.0
-mypy>=1.10.0
+mypy>=2.4.1
 types-Flask
 types-requests
 types-PyYAML
