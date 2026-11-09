@@ -6,6 +6,6 @@ types-Flask
 types-requests
 types-PyYAML
 types-Werkzeug
-bandit[toml]>=1.7
+bandit[toml]>=1.9.4
 pip-audit
 
