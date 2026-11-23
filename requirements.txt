@@ -16,5 +16,5 @@ Werkzeug==3.1.9
 cryptography==50.0.2
 requests
 openai>=3.57.0
-langchain>=1.5.0
+langchain>=1.5.2
 langchain-openai>=1.8.5
