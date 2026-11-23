@@ -17,4 +17,4 @@ cryptography==50.0.2
 requests
 openai>=3.50.0
 langchain>=1.5.0
-langchain-openai>=1.7.4
+langchain-openai>=1.8.5
