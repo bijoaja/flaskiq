@@ -48,3 +48,9 @@ generators:
 
 scripts:
   serve: "python3 server.py"
+  serve_uv: "uv run --no-project --with-requirements requirements.txt python server.py"
+  analyze:
+    - {name: ruff-check, cmd: "ruff check .", fix: "ruff check --fix ."}
+    - {name: ruff-format, cmd: "ruff format --check .", fix: "ruff format ."}
+    - {name: bandit, cmd: "bandit -q -r app utils config.py -c pyproject.toml"}
+    - {name: mypy, cmd: "mypy ."}

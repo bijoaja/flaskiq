@@ -8,7 +8,7 @@
 
 **Tech Stack:** YAML manifest, ruff, bandit, mypy, uv.
 
-**Spec:** `docs/superpowers/specs/2026-11-25-manifest-check-serve-design.md` (akan di-rename ke `...-analyze-serve-design.md`).
+**Spec:** `docs/superpowers/specs/2026-11-25-manifest-analyze-serve-design.md`.
 
 ## Global Constraints
 - Perintah `analyze` identik dengan job `lint` di `.github/workflows/ci.yml`: `ruff check .`, `ruff format --check .`, `bandit -q -r app utils config.py -c pyproject.toml`, `mypy .`.
@@ -32,7 +32,7 @@
 **Interfaces:**
 - Consumes: skema `scripts.analyze` dari plan pyartisan Task 5: list `{name, cmd, fix?}`.
 
-- [ ] **Step 1: Edit blok `scripts`** menjadi:
+- [x] **Step 1: Edit blok `scripts`** menjadi:
 ```yaml
 scripts:
   serve: "python3 server.py"
@@ -44,17 +44,17 @@ scripts:
     - {name: mypy, cmd: "mypy ."}
 ```
   Catatan: key `fix` ditambah di plan ini (tidak ada di spec template) agar `analyze --fix` jalan. Update spec agar sinkron.
-- [ ] **Step 2: Validasi YAML:** `python -c "import yaml;print(yaml.safe_load(open('.pyartisan/manifest.yaml'))['scripts']['analyze'][0])"` -> dict `ruff-check`.
-- [ ] **Step 3: Uji dengan pyartisan baru:** `pyartisan analyze` -> semua langkah `✔`, exit 0 (butuh `requirements-dev.txt` terpasang di venv). `pyartisan analyze --only bandit` -> hanya bandit.
-- [ ] **Step 4: Uji serve uv:** `pyartisan serve --uv` -> server naik (port dari `.env`), Ctrl+C menghentikan.
-- [ ] **Step 5: Regresi:** `pyartisan make controller demo` di salinan sementara -> berhasil seperti sebelum edit.
-- [ ] **Step 6: Commit** `git add .pyartisan/manifest.yaml docs/superpowers && git commit -m "feat(manifest): add analyze steps and serve_uv"`
+- [x] **Step 2: Validasi YAML:** `python -c "import yaml;print(yaml.safe_load(open('.pyartisan/manifest.yaml'))['scripts']['analyze'][0])"` -> dict `ruff-check`.
+- [x] **Step 3: Uji dengan pyartisan baru:** `pyartisan analyze` -> semua langkah `✔`, exit 0 (butuh `requirements-dev.txt` terpasang di venv). `pyartisan analyze --only bandit` -> hanya bandit.
+- [x] **Step 4: Uji serve uv:** `pyartisan serve --uv` -> server naik (port dari `.env`), Ctrl+C menghentikan.
+- [x] **Step 5: Regresi:** `pyartisan make controller demo` di salinan sementara -> berhasil seperti sebelum edit.
+- [x] **Step 6: Commit** `git add .pyartisan/manifest.yaml docs/superpowers && git commit -m "feat(manifest): add analyze steps and serve_uv"`
 
 ### Task 2: Verifikasi bandit CI
 
 **Files:**
 - Modify: `.github/workflows/ci.yml` (hanya jika bandit hilang)
 
-- [ ] **Step 1:** `grep -n "bandit" .github/workflows/ci.yml` -> step `bandit -q -r app utils config.py -c pyproject.toml` ada di job `lint`.
-- [ ] **Step 2:** `bandit -q -r app utils config.py -c pyproject.toml` -> tanpa temuan baru. Temuan: perbaiki atau tambah `# nosec` dengan alasan.
-- [ ] **Step 3:** Jika tidak ada perubahan, lewati commit. Selain itu `git commit -m "ci: keep bandit scope in sync with analyze"`.
+- [x] **Step 1:** `grep -n "bandit" .github/workflows/ci.yml` -> step `bandit -q -r app utils config.py -c pyproject.toml` ada di job `lint`.
+- [x] **Step 2:** `bandit -q -r app utils config.py -c pyproject.toml` -> tanpa temuan baru. Temuan: perbaiki atau tambah `# nosec` dengan alasan.
+- [x] **Step 3:** Jika tidak ada perubahan, lewati commit. Selain itu `git commit -m "ci: keep bandit scope in sync with analyze"`.
