@@ -100,10 +100,27 @@ fail with a clear error.
 pyartisan serve
 ```
 
-No flags — `serve` auto-detects the strategy: uses Docker (`docker compose up`)
-if `docker-compose.yml` exists and Docker is running, otherwise falls back to
-the `scripts.serve` command from `.pyartisan/manifest.yaml` inside an active
-virtualenv, otherwise prints instructions to fix your setup.
+By default `serve` auto-detects the strategy in this order: Docker
+(`docker compose up`) if `docker-compose.yml` exists and Docker is running,
+then the `scripts.serve` command from `.pyartisan/manifest.yaml` inside an
+active virtualenv, then `uv` (`scripts.serve_uv`), otherwise it prints
+instructions to fix your setup.
+
+Force one mode with `--docker`, `--venv`, or `--uv`. The flags are mutually
+exclusive, and `serve` errors out if the forced mode is unavailable. `--uv`
+runs `scripts.serve_uv` from the manifest.
+
+### Run code analysis
+
+```bash
+pyartisan analyze
+pyartisan analyze --only bandit
+pyartisan analyze --fix
+```
+
+Runs ruff check, ruff format --check, bandit, and mypy as defined in
+`scripts.analyze` of `.pyartisan/manifest.yaml`. Use `--only <name>` to run a
+single check, and `--fix` to auto-fix where supported (ruff check and format).
 
 ### Build production Docker image
 
