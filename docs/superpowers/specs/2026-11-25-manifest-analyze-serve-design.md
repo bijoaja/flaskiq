@@ -26,7 +26,7 @@ scripts:
 - `analyze` sama dengan job `lint` di `.github/workflows/ci.yml`. Satu sumber kebenaran: jika CI berubah, manifest ikut berubah.
 
 ## Bandit (poin 4)
-Sudah ada di `ci.yml` (`bandit -q -r app utils config.py`) dan `[tool.bandit]` di `pyproject.toml`. Verifikasi saja.
+Sudah ada di `ci.yml` (`bandit -q -r app utils config.py -c pyproject.toml`) dan `[tool.bandit]` di `pyproject.toml`. Verifikasi saja.
 
 ## Pengujian
 - `pyartisan analyze` di flaskiq: semua langkah lulus.

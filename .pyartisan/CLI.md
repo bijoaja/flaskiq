@@ -69,7 +69,14 @@ Jika target tidak dikenal atau project tidak memiliki `.pyartisan/manifest.yaml`
 ```bash
 pyartisan serve
 ```
-Menjalankan dev server. Strategi fallback: Docker (jika tersedia) → virtualenv lokal → peringatan jika keduanya tidak ada.
+Menjalankan dev server. Mode otomatis berurutan: Docker (jika tersedia) → virtualenv lokal → uv → peringatan jika semuanya tidak ada.
+
+Flag `--docker`, `--venv`, `--uv` memaksa satu mode (saling eksklusif, error jika mode tidak tersedia). `--uv` menjalankan `scripts.serve_uv` dari manifest.
+
+```bash
+pyartisan analyze
+```
+Menjalankan ruff check, ruff format --check, bandit, dan mypy sesuai `scripts.analyze` di manifest. Opsi: `--only <nama>` untuk satu check, `--fix` untuk perbaikan otomatis jika didukung.
 
 ```bash
 pyartisan build
@@ -281,7 +288,8 @@ Lihat [`Tutorial Create Plugin`](HOW_TO_CREATE_PLUGIN.md) untuk panduan lengkap 
 |---|---|
 | `pyartisan new <framework> <name>` | Buat project baru dari template |
 | `pyartisan make <target> <name>` | Generate kode dari stub manifest project |
-| `pyartisan serve` | Jalankan dev server |
+| `pyartisan serve [--docker\|--venv\|--uv]` | Jalankan dev server |
+| `pyartisan analyze [--only <nama>] [--fix]` | Jalankan ruff, bandit, mypy |
 | `pyartisan build` | Build artifact produksi |
 | `pyartisan config show\|set\|reset` | Kelola konfigurasi global |
 | `pyartisan doctor` | Cek kesehatan environment |
